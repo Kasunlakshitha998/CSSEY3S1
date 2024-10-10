@@ -1,0 +1,305 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import validator from 'validator';
+import UserNav from '../../Navbar/User/UserNav';
+import { useLocation } from 'react-router-dom';
+
+const PaymentPage = () => {
+  const location = useLocation();
+  const { billId, amounts } = location.state || {};
+  const [selectedMethod, setSelectedMethod] = useState('');
+  const [email, setEmail] = useState('testuser@example.com'); 
+  const [amount, setAmount] = useState(amounts || 0);
+  const [cardNumber, setCardNumber] = useState('4111111111111111'); 
+  const [expiryDate, setExpiryDate] = useState('12/25'); 
+  const [cvv, setCvv] = useState('123'); 
+  const [name, setName] = useState('John Doe');
+  const [slip, setSlip] = useState(null); 
+  const [errors, setErrors] = useState('');
+
+  useEffect(() => {
+    if (amounts) {
+      setAmount(amounts);
+    }
+  }, [amounts]);
+  
+  const handleSelectMethod = (method) => {
+    setSelectedMethod(method);
+    setErrors(''); // Reset errors on method change
+  };
+
+  const validateFields = () => {
+    let validationErrors = '';
+
+    if (selectedMethod === 'card') {
+      if (!validator.isEmail(email)) {
+        validationErrors = 'Please enter a valid email.';
+      } else if (!validator.isLength(cardNumber, { min: 16, max: 16 })) {
+        validationErrors = 'Card number must be 16 digits.';
+      } else if (!validator.isLength(expiryDate, { min: 5, max: 5 })) {
+        validationErrors = 'Expiry date must be in MM/YY format.';
+      } else if (!validator.isLength(cvv, { min: 3, max: 3 })) {
+        validationErrors = 'CVV must be 3 digit.';
+      } else if (!validator.isNumeric(cvv)) {
+        validationErrors = 'CVV must be 3 digits.';
+      } else if (!name) {
+        validationErrors = 'Please enter the cardholder name.';
+      }
+    } else if (selectedMethod === 'offline' && !slip) {
+      validationErrors = 'Please upload a payment slip.';
+    }
+
+    setErrors(validationErrors);
+    return !validationErrors;
+  };
+
+  const handlePayment = async () => {
+    if (!validateFields()) return;
+
+    const paymentData = {
+      method: selectedMethod,
+      email,
+      amount,
+      slip, // Include slip data
+    };
+
+    try {
+      const response = await axios.post('your-api-endpoint-here', paymentData);
+      if (response.status === 200) {
+        console.log('Payment status updated:', response.data);
+        alert('Payment Successful');
+      }
+    } catch (error) {
+      console.error('Error updating payment status:', error);
+      alert('Payment failed, please try again.');
+    }
+  };
+
+  const handleFileUpload = (file) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSlip(reader.result); // Set base64 string
+    };
+    reader.readAsDataURL(file);
+  };
+
+  return (
+    <>
+      <div className="min-h-screen bg-blue-100 flex flex-col items-center py-8 px-4">
+        <UserNav />
+
+        {selectedMethod === '' && (
+          <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 mt-20">
+            <h2 className="text-xl font-semibold text-center mb-4">
+              Choose A Payment Method
+            </h2>
+            <div
+              onClick={() => handleSelectMethod('card')}
+              className="border-t border-b py-4 text-center cursor-pointer"
+            >
+              Credit / Debit Card
+            </div>
+            <div
+              onClick={() => handleSelectMethod('offline')}
+              className="border-b py-4 text-center cursor-pointer"
+            >
+              Offline/Bank transfer
+            </div>
+          </div>
+        )}
+
+        {selectedMethod === 'card' && (
+          <PayCard
+            errors={errors}
+            email={email}
+            setEmail={setEmail}
+            amount={amount}
+            cardNumber={cardNumber}
+            setCardNumber={setCardNumber}
+            expiryDate={expiryDate}
+            setExpiryDate={setExpiryDate}
+            cvv={cvv}
+            setCvv={setCvv}
+            name={name}
+            setName={setName}
+            handlePayment={handlePayment}
+            setSelectedMethod={setSelectedMethod}
+          />
+        )}
+
+        {selectedMethod === 'offline' && (
+          <PayOffline
+            errors={errors}
+            slip={slip} // Pass slip state
+            setSlip={setSlip}
+            handleFileUpload={handleFileUpload} // Pass file upload handler
+            handlePayment={handlePayment}
+            setSelectedMethod={setSelectedMethod}
+          />
+        )}
+      </div>
+    </>
+  );
+};
+
+export default PaymentPage;
+
+function PayOffline({
+  errors,
+  slip,
+  setSlip,
+  handleFileUpload,
+  handlePayment,
+  setSelectedMethod,
+}) {
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    handleFileUpload(file);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 mt-20">
+      <h2 className="text-xl font-semibold text-center mb-4">
+        Upload Payment Slip
+      </h2>
+      {errors && <p className="text-red-500 mb-4">{errors}</p>}
+      <div
+        className="border-dashed border-4 border-gray-300 p-4 text-center cursor-pointer mb-10"
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onClick={() => document.getElementById('fileInput').click()} // Trigger file input on click
+      >
+        {slip ? (
+          <img
+            src={slip}
+            alt="Slip preview"
+            className="mx-auto mb-4 w-full h-48 object-contain"
+          />
+        ) : (
+          <p>Drag and drop the payment slip here or click to upload</p>
+        )}
+
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleFileUpload(e.target.files[0])}
+          className="hidden" // Hidden file input
+        />
+      </div>
+
+      <button
+        type="button"
+        className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition"
+        onClick={handlePayment}
+      >
+        Pay Bill
+      </button>
+      <button
+        type="button"
+        className="w-full bg-gray-300 text-gray-700 py-2 rounded-md mt-4 hover:bg-gray-400 transition"
+        onClick={() => setSelectedMethod('')}
+      >
+        Cancel
+      </button>
+    </div>
+  );
+}
+
+function PayCard({
+  errors,
+  email,
+  setEmail,
+  amount,
+  cardNumber,
+  setCardNumber,
+  expiryDate,
+  setExpiryDate,
+  cvv,
+  setCvv,
+  name,
+  setName,
+  handlePayment,
+  setSelectedMethod,
+}) {
+  return (
+    <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 mt-20 mb-20">
+      <h2 className="text-xl font-semibold text-center mb-4">Pay with Card</h2>
+      {errors && <p className="text-red-500 mb-4">{errors}</p>}
+      <form>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Email</label>
+          <input
+            type="email"
+            value={email}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Amount</label>
+          <input
+            type="text"
+            value={`Rs. ${amount}`}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none"
+            readOnly
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Card Information</label>
+          <input
+            type="text"
+            placeholder="Card Number"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none"
+            value={cardNumber}
+            onChange={(e) => setCardNumber(e.target.value)}
+          />
+        </div>
+        <div className="flex space-x-4 mb-4">
+          <input
+            type="text"
+            placeholder="MM/YY"
+            className="w-1/2 px-3 py-2 border rounded-md focus:outline-none"
+            value={expiryDate}
+            onChange={(e) => setExpiryDate(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="CVV"
+            className="w-1/2 px-3 py-2 border rounded-md focus:outline-none"
+            value={cvv}
+            onChange={(e) => setCvv(e.target.value)}
+          />
+        </div>
+        <div className="mb-6">
+          <input
+            type="text"
+            placeholder="Name"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <button
+          type="button"
+          className="w-full bg-purple-600 text-white py-2 rounded-md hover:bg-purple-700 transition"
+          onClick={handlePayment}
+        >
+          Pay Bill
+        </button>
+        <button
+          type="button"
+          className="w-full bg-gray-300 text-gray-700 py-2 rounded-md mt-4 hover:bg-gray-400 transition"
+          onClick={() => setSelectedMethod('')}
+        >
+          Cancel
+        </button>
+      </form>
+    </div>
+  );
+}
