@@ -10,11 +10,13 @@ import Register from './Auth/Register';
 import AdminDash from './Home/AdminDash';
 import UserDash from './Home/UserDash';
 import ProtectedRoute from './Auth/ProtectedRoute';
-<<<<<<< Updated upstream
+
 import DoctorDash from './Home/DoctorDash';
-=======
+
 import UserTypeSelection from './Auth/UserTypeSelection'; // Import UserTypeSelection
->>>>>>> Stashed changes
+import Appointment from './Appointment/Appointment'; // Import the Appointment component
+import AdminAppointments from './Appointment/AdminAppointments';
+
 
 function App() {
 
@@ -47,11 +49,11 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<UserTypeSelection />} />
+      <Route path="/usertype" element={<UserTypeSelection />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register />} />
         <Route
-          path="/user"
+          path="/"
           element={
             <ProtectedRoute
               isAuthenticated={isAuthenticated}
@@ -95,6 +97,9 @@ function App() {
         <Route path="/billDetails/:billId" element={<BillDetails />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/AllBill" element={<AllBill />} />
+        <Route path="/appointment" element={<Appointment />} /> {/* New Appointment route */}
+        <Route path="/adminappointment" element={<AdminAppointments />} /> {/* New Appointment route */}
+        
       </Routes>
     </Router>
   );

@@ -14,10 +14,12 @@ const AdminNav = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false); // Default to false for initial closed state
 
+  // Updated navLinks to include the Appointments section
   const navLinks = [
     { name: 'Home', icon: <FaHome />, path: '/' },
     { name: 'Patients', icon: <FaUser />, path: '/patients' },
     { name: 'Billing', icon: <FaFileAlt />, path: '/AllBill' },
+    { name: 'Appointments', icon: <FaFileAlt />, path: '/adminappointment' }, // New link for Appointments
     { name: 'Logout', icon: <FaSignOutAlt />, path: '/logout' },
   ];
 

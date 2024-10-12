@@ -1,3 +1,5 @@
+// src/Auth/Login.jsx
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -25,26 +27,31 @@ const Login = ({ onLogin }) => {
         'http://localhost:8500/user/login',
         formData
       );
-      console.log(res.data);
-      const responsed = res.data;
+
+      const { token, name, userId, age, type } = res.data;
+
+      // Set the token cookie (consider setting Secure and HttpOnly flags from the backend if possible)
+      Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'strict' });
+
+      // Optionally, set other user details if needed
       Cookies.set('userEmail', email, { expires: 1 });
-      Cookies.set('name', res.data.name, { expires: 1 });
-      Cookies.set('userId', res.data.userId, { expires: 7 });
-      Cookies.set('age', res.data.age, { expires: 1 });
-      Cookies.set('type', res.data.type, { expires: 1 });
+      Cookies.set('name', name, { expires: 1 });
+      Cookies.set('userId', userId, { expires: 7 });
+      Cookies.set('age', age, { expires: 1 });
+      Cookies.set('type', type, { expires: 1 });
+
       onLogin(res.data);
 
-
-      if (res.data.type == 'user') {
-        navigate('/user');
-      } else if (responsed.type == 'admin') {
-        navigate('/admin');
-      } else if (responsed.type == 'doctor') {
-        navigate('/doctor');
+      if (type === 'user') {
+        navigate('/'); // Redirect to user dashboard
+      } else if (type === 'admin') {
+        navigate('/admin'); // Redirect to admin dashboard
+      } else if (type === 'doctor') {
+        navigate('/doctor'); // Redirect to doctor dashboard
       } else {
-        console.log('error Login user Type');
+        console.log('Error: Undefined user type');
+        toast.error('Undefined user type. Please contact support.');
       }
-
     } catch (err) {
       console.error(err.response?.data || err.message);
       toast.error(
@@ -72,6 +79,7 @@ const Login = ({ onLogin }) => {
               onChange={onChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
               disabled={loading} // Disable inputs when loading
+              required
             />
           </div>
           <div className="mb-6">
@@ -86,6 +94,7 @@ const Login = ({ onLogin }) => {
               onChange={onChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
               disabled={loading}
+              required
             />
           </div>
           <div className="flex items-center justify-between">
@@ -99,6 +108,7 @@ const Login = ({ onLogin }) => {
           </div>
           <Link to="/register">
             <button
+              type="button"
               className="bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-colors duration-300 w-full mt-4 border-2 border-indigo-600"
               disabled={loading}
             >

@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const app = express();
 const mongoConnection = require('./util/MongoConnection');
 const billRoutes = require('./routers/MedicalBillRouter');
+const appointmentRoutes = require('./routers/AppointmentRouter');
 
 // Load environment variables from .env
 dotenv.config();
@@ -26,7 +27,7 @@ app.use(bodyParser.json());
     }
 })();
 
-
+app.use('/appointments', appointmentRoutes); // Use AppointmentRouter
 app.use('/bills', billRoutes);
 
 const userRoutes = require('./routers/userRout');
