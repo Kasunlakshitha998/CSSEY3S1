@@ -10,7 +10,11 @@ import Register from './Auth/Register';
 import AdminDash from './Home/AdminDash';
 import UserDash from './Home/UserDash';
 import ProtectedRoute from './Auth/ProtectedRoute';
+<<<<<<< Updated upstream
 import DoctorDash from './Home/DoctorDash';
+=======
+import UserTypeSelection from './Auth/UserTypeSelection'; // Import UserTypeSelection
+>>>>>>> Stashed changes
 
 function App() {
 
@@ -43,10 +47,11 @@ function App() {
   return (
     <Router>
       <Routes>
+      <Route path="/" element={<UserTypeSelection />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register />} />
         <Route
-          path="/"
+          path="/user"
           element={
             <ProtectedRoute
               isAuthenticated={isAuthenticated}

@@ -36,7 +36,7 @@ const Login = ({ onLogin }) => {
 
 
       if (res.data.type == 'user') {
-        navigate('/');
+        navigate('/user');
       } else if (responsed.type == 'admin') {
         navigate('/admin');
       } else if (responsed.type == 'doctor') {
