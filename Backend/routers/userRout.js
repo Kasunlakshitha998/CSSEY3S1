@@ -11,7 +11,7 @@ dotenv.config();
 
 // Register Route
 router.post('/register', async (req, res) => {
-  const { name, email, age, password, confirmPassword } = req.body;
+  const { name, email, age, password, confirmPassword, type } = req.body;
 
   // Validate fields
   if (!name || !email || !password || !confirmPassword || !age) {
@@ -38,6 +38,7 @@ router.post('/register', async (req, res) => {
       email,
       age,
       password: hashedPassword,
+      type
     });
 
     await user

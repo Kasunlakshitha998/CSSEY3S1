@@ -39,6 +39,8 @@ const Login = ({ onLogin }) => {
         navigate('/');
       } else if (responsed.type == 'admin') {
         navigate('/admin');
+      } else if (responsed.type == 'doctor') {
+        navigate('/doctor');
       } else {
         console.log('error Login user Type');
       }

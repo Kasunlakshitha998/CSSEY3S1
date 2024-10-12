@@ -10,6 +10,7 @@ import Register from './Auth/Register';
 import AdminDash from './Home/AdminDash';
 import UserDash from './Home/UserDash';
 import ProtectedRoute from './Auth/ProtectedRoute';
+import DoctorDash from './Home/DoctorDash';
 
 function App() {
 
@@ -64,12 +65,26 @@ function App() {
             <ProtectedRoute
               isAuthenticated={isAuthenticated}
               user={user}
-              requiredRole="user"
+              requiredRole="admin"
             >
               <AdminDash handleLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/doctor"
+          element={
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              user={user}
+              requiredRole="doctor"
+            >
+              <DoctorDash handleLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/AddNewBill" element={<AddBill />} />
         <Route path="/bill" element={<BillList />} />
         <Route path="/billDetails/:billId" element={<BillDetails />} />
