@@ -11,7 +11,7 @@ dotenv.config();
 
 // Register Route
 router.post('/register', async (req, res) => {
-  const { name, email, age, password, confirmPassword, type } = req.body;
+  const { name, email, password, confirmPassword, age, type } = req.body;
 
   // Validate fields
   if (!name || !email || !password || !confirmPassword || !age) {
