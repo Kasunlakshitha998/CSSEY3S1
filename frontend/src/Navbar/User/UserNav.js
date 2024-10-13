@@ -74,7 +74,7 @@ const UserNav = () => {
     <>
       {/* Header */}
       <header className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10 flex justify-between items-center">
-        <h1 className="text-3xl font-bold mx-auto text-purple-600">
+        <h1 className="text-3xl font-bold mx-auto text-blue-600">
           Hospital Management System
         </h1>
         <div className="flex items-center space-x-4 mr-5">
@@ -132,7 +132,7 @@ const UserNav = () => {
       {/* Desktop Sidebar Navigation */}
       {isAuthenticated && (
         <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-20 transform transition-transform duration-300 md:block hidden">
-          <div className="bg-purple-600 p-4">
+          <div className="bg-blue-600 p-4">
             <h2 className="ml-5 text-3xl text-white font-semibold">LESSON</h2>
           </div>
           <ul className="mt-5">
