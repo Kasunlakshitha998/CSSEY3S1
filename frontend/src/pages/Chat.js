@@ -76,9 +76,9 @@ const Chat = () => {
 
                 <div className="space-y-4">
                     {messages.map((msg, index) => (
-                        <div key={index} className={`p-2 rounded-lg max-w-xs ${msg.sender === 'Doctor' ? 'ml-auto bg-indigo-200' : 'mr-auto bg-gray-300'}`}>
-                            <span>{msg.message || 'Image sent'}</span> {/* Display message or indicate an image */}
-                            {msg.file && <img src={`http://localhost:8500/${msg.file}`} alt="attachment" style={{ width: '100px' }} />} {/* Display photo */}
+                        <div key={index} className={`p-2 rounded-lg ${msg.sender === 'Doctor' ? 'ml-auto bg-indigo-200' : 'mr-auto bg-gray-300'}`} style={{ minWidth: '215px', maxWidth: '70%', width: 'fit-content' }}>
+                            <span>{msg.message}</span>
+                            {msg.file && <img src={`http://localhost:8500/${msg.file}`} alt="attachment" style={{ width: '200px', height: 'auto', borderRadius: '5px' }} />} {/* Render image directly */}
                         </div>
                     ))}
                 </div>
