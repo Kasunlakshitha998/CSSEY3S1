@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +11,7 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     age: '',
-    type: '', 
+    type: 'user', 
   });
 
   const { name, email, password, confirmPassword, age, type } = formData;
@@ -45,21 +47,32 @@ const Register = () => {
     return true;
   };
 
-  const handleRegister = async () => {
-    try {
-      const res = await axios.post(
-        'http://localhost:8500/user/register',
-        formData
-      );
-      console.log('Response:', res.data);
+const handleRegister = async () => {
+  try {
+    const res = await axios.post(
+      'http://localhost:8500/user/register',
+      formData
+    );
+    console.log('Response:', res.data);
 
-      alert('Register successful');
-      navigate('/login');
-    } catch (err) {
-      console.error('Error registering:', err.response?.data || err.message);
-      alert('Error during registration');
-    }
-  };
+    // Show success toast message
+    toast.success('Registration successful!', {
+      position: 'top-right',
+      autoClose: 3000,
+    });
+
+    // Navigate to login or another page after success
+    navigate('/login');
+  } catch (err) {
+    console.error('Error registering:', err.response?.data || err.message);
+    const errorMessage = err.response?.data.msg || 'Error during registration';
+    toast.error('Error: ' + errorMessage, {
+      position: 'top-right',
+      autoClose: 3000,
+    });
+  }
+};
+
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -81,7 +94,7 @@ const Register = () => {
               htmlFor="name"
               className="block text-gray-600 text-sm font-medium mb-2"
             >
-              Name
+              User Name
             </label>
             <input
               type="text"
@@ -89,7 +102,7 @@ const Register = () => {
               value={name}
               onChange={onChange}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-              placeholder="Enter your name"
+              placeholder="Enter your user name"
               required
             />
           </div>
@@ -199,6 +212,7 @@ const Register = () => {
             </button>
           </Link>
         </form>
+        <ToastContainer />
       </div>
     </div>
   );
