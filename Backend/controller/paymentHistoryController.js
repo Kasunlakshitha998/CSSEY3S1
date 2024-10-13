@@ -29,7 +29,7 @@ exports.createPayment = async (req, res) => {
 // Get all payments
 exports.getPayments = async (req, res) => {
   try {
-    const payments = await PaymentHistory.find();
+    const payments = await PaymentHistory.find().sort({ date: -1 });
     res.status(200).json(payments);
   } catch (error) {
     res

@@ -14,7 +14,7 @@ const createBill = async (billData) => {
 // Get all bills
 const getAllBills = (req, res) => {
   MedicalBill.find()
-    .sort({ createdAt: -1 })
+    .sort({ issuedDate: -1 })
     .then((MedicalBills) => {
       res.json(MedicalBills);
     })

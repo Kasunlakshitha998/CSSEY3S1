@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   Tooltip,
@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import moment from 'moment';
 import { Box, ButtonGroup, Button } from '@mui/material';
-import { getpaymentHistory } from '../../../services/BillingAPI'; // Adjust the import based on your API path
+import { getpaymentHistory } from '../../../services/BillingAPI'; 
 
 const PaymentReport = () => {
   const [payments, setPayments] = useState([]);
@@ -68,13 +68,13 @@ const PaymentReport = () => {
       </ButtonGroup>
 
       <ResponsiveContainer width="100%" height={400}>
-        <BarChart data={reportData}>
+        <LineChart data={reportData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
           <YAxis />
           <Tooltip />
-          <Bar dataKey="totalAmount" fill="#4a90e2" />
-        </BarChart>
+          <Line type="monotone" dataKey="totalAmount" stroke="#4a90e2" />
+        </LineChart>
       </ResponsiveContainer>
     </Box>
   );
