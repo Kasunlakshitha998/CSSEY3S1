@@ -33,7 +33,9 @@ const Appointment = () => {
     const fetchAppointments = async () => {
       try {
         const res = await axios.get('http://localhost:8500/actual-appointments');
-        setAppointments(res.data); // Assuming the data is an array of appointments
+        // Filter appointments by email
+        const filteredAppointments = res.data.filter(appointment => appointment.email === userEmail);
+        setAppointments(filteredAppointments); // Set only matching appointments
       } catch (err) {
         console.error(err);
         toast.error('Failed to fetch appointments.');
@@ -62,7 +64,7 @@ const Appointment = () => {
     }
     return true;
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -112,149 +114,147 @@ const Appointment = () => {
 
   return (
     <>
-    {/* Header */}
-    <Usernav />
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-4xl font-bold mb-6 text-purple-600">Appointment Page</h1>
-      <button
-        onClick={toggleForm}
-        className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 focus:outline-none transition-colors duration-300"
-      >
-        {showForm ? 'Cancel' : 'Request Appointment'}
-      </button>
+      {/* Header */}
+      <Usernav />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+        <h1 className="text-4xl font-bold mb-6 text-purple-600">Appointment Page</h1>
+        <button
+          onClick={toggleForm}
+          className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 focus:outline-none transition-colors duration-300"
+        >
+          {showForm ? 'Cancel' : 'Request Appointment'}
+        </button>
 
-      {showForm && (
-        <form onSubmit={handleSubmit} className="mt-6 bg-white p-6 rounded shadow-md w-full max-w-md">
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="patientId">
-              Patient ID
-            </label>
-            <input
-              type="text"
-              name="patientId"
-              value={appointmentData.patientId}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="patientName">
-              Patient Name
-            </label>
-            <input
-              type="text"
-              name="patientName"
-              value={appointmentData.patientName}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-              required
-            />
-          </div>
-          <input type="hidden" name="email" value={appointmentData.email} />
+        {showForm && (
+          <form onSubmit={handleSubmit} className="mt-6 bg-white p-6 rounded shadow-md w-full max-w-md">
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="patientId">
+                Patient ID
+              </label>
+              <input
+                type="text"
+                name="patientId"
+                value={appointmentData.patientId}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="patientName">
+                Patient Name
+              </label>
+              <input
+                type="text"
+                name="patientName"
+                value={appointmentData.patientName}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                required
+              />
+            </div>
+            <input type="hidden" name="email" value={appointmentData.email} />
 
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
-              Date
-            </label>
-            <input
-              type="date"
-              name="date"
-              value={appointmentData.date}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="time">
-              Time
-            </label>
-            <input
-              type="text"
-              name="time"
-              value={appointmentData.time}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="reason">
-              Reason for appointment
-            </label>
-            <textarea
-              name="reason"
-              value={appointmentData.reason}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
-              placeholder="Enter the reason for your appointment"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 focus:outline-none transition-colors duration-300 w-full"
-            disabled={loading}
-          >
-            {loading ? 'Submitting...' : 'Submit'}
-          </button>
-        </form>
-      )}
-
-      {/* Appointments Table */}
-      <div className="mt-8 w-full max-w-4xl bg-white rounded shadow-md overflow-hidden">
-        <h2 className="text-2xl font-bold text-center p-4">Scheduled Appointments</h2>
-        {fetchingAppointments ? (
-          <p className="text-center p-4">Loading appointments...</p>
-        ) : (
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">Patient ID</th>
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">Patient Name</th>
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">Email</th> {/* New column for email */}
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">Date</th>
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">Time</th>
-               
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">Doctor Name</th>
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">Specialization</th>
-                <th className="px-4 py-2 text-left text-gray-600 font-semibold">Action</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {appointments.length > 0 ? (
-                appointments.map((appointment) => (
-                  <tr key={appointment._id} className="hover:bg-gray-100 transition-colors duration-200">
-                    <td className="px-4 py-2">{appointment.patientId}</td>
-                    <td className="px-4 py-2">{appointment.patientName}</td>
-                    <td className="px-4 py-2">{appointment.email}</td>
-                    <td className="px-4 py-2">{new Date(appointment.date).toLocaleDateString()}</td>
-                    <td className="px-4 py-2">{appointment.time}</td>
-            
-                    <td className="px-4 py-2">{appointment.doctorName}</td>
-                    <td className="px-4 py-2">{appointment.specialization}</td>
-                    <td className="px-4 py-2">
-                      <button
-                        onClick={() => handleDelete(appointment._id)}
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none transition-colors duration-300"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="9" className="text-center py-4">No appointments found.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
+                Date
+              </label>
+              <input
+                type="date"
+                name="date"
+                value={appointmentData.date}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="time">
+                Time
+              </label>
+              <input
+                type="text"
+                name="time"
+                value={appointmentData.time}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="reason">
+                Reason for appointment
+              </label>
+              <textarea
+                name="reason"
+                value={appointmentData.reason}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
+                placeholder="Enter the reason for your appointment"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 focus:outline-none transition-colors duration-300 w-full"
+              disabled={loading}
+            >
+              {loading ? 'Submitting...' : 'Submit'}
+            </button>
+          </form>
         )}
+
+        {/* Appointments Table */}
+        <div className="mt-8 w-full max-w-4xl bg-white rounded shadow-md overflow-hidden">
+          <h2 className="text-2xl font-bold text-center p-4">Scheduled Appointments</h2>
+          {fetchingAppointments ? (
+            <p className="text-center p-4">Loading appointments...</p>
+          ) : (
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">Patient ID</th>
+                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">Patient Name</th>
+                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">Email</th> {/* New column for email */}
+                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">Date</th>
+                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">Time</th>
+                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">Doctor Name</th>
+                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">Specialization</th>
+                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">Action</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {appointments.length > 0 ? (
+                  appointments.map((appointment) => (
+                    <tr key={appointment._id} className="hover:bg-gray-100 transition-colors duration-200">
+                      <td className="px-4 py-2">{appointment.patientId}</td>
+                      <td className="px-4 py-2">{appointment.patientName}</td>
+                      <td className="px-4 py-2">{appointment.email}</td>
+                      <td className="px-4 py-2">{new Date(appointment.date).toLocaleDateString()}</td>
+                      <td className="px-4 py-2">{appointment.time}</td>
+                      <td className="px-4 py-2">{appointment.doctorName}</td>
+                      <td className="px-4 py-2">{appointment.specialization}</td>
+                      <td className="px-4 py-2">
+                        <button
+                          onClick={() => handleDelete(appointment._id)}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="8" className="text-center p-4">No appointments found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
       <ToastContainer />
-    </div>
     </>
   );
 };

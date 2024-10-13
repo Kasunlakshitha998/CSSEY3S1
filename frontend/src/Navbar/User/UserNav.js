@@ -38,6 +38,7 @@ const UserNav = () => {
     { name: 'Appointment', icon: <FaCalendarAlt />, path: '/appointment' }, // New Appointment link
     { name: 'Profile', icon: <FaUserCircle />, path: '/profile' },
     { name: 'Admin Appointments', icon: <FaCalendarAlt />, path: '/adminappointment' }, // Admin Appointments link
+    { name: 'Prescriptions', icon: <FaFileAlt />, path: '/prescriptions' }, // New Prescriptions link
   ];
 
   // Optionally, restrict certain links based on user role
