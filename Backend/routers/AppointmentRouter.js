@@ -7,12 +7,13 @@ const Appointment = require('../models/Appointment');
 // Create a new appointment
 router.post('/create', async (req, res) => {
   try {
-    const { patientId, patientName, date, time, reason } = req.body;
+    const { patientId, patientName,email, date, time, reason } = req.body;
 
     const newAppointment = new Appointment({
       patientId,
       patientName,
       date,
+      email,
       time,
       reason,
     });

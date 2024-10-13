@@ -15,6 +15,10 @@ const AppointmentSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  email: {
+    type: String,
+    required: true, // Add email field and mark it as required
+  },
   time: {
     type: String,
     required: true,
