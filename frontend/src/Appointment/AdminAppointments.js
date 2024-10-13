@@ -14,6 +14,7 @@ const AdminAppointments = () => {
     email: '',
     date: '',
     time: '',
+    hospitalname: '',
     doctorName: '',
     specialization: '',
   });
@@ -56,7 +57,7 @@ const AdminAppointments = () => {
     try {
       const response = await axios.post('http://localhost:8500/actual-appointments/', formData);
       setAppointments((prev) => [...prev, response.data]);
-      setFormData({ patientId: '', patientName: '', email: '', date: '', time: '', doctorName: '', specialization: '' }); // Reset form
+      setFormData({ patientId: '', patientName: '', email: '', date: '', time: '', hospitalname: '', doctorName: '', specialization: '' }); // Reset form
       setShowCreateForm(false); // Hide form after submission
     } catch (err) {
       setError(err.message || 'Error creating appointment');
@@ -114,6 +115,15 @@ const AdminAppointments = () => {
             type="time"
             name="time"
             value={formData.time}
+            onChange={handleInputChange}
+            required
+          />
+
+          <input
+            type="text"
+            name="hospitalname"
+            placeholder="hospitalname"
+            value={formData.hospitalname}
             onChange={handleInputChange}
             required
           />

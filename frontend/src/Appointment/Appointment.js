@@ -13,6 +13,7 @@ const Appointment = () => {
     email: '',
     date: '',
     time: '',
+    hospitalname: '',
     doctorName: '',
     specialization: '',
   });
@@ -218,6 +219,8 @@ const Appointment = () => {
                   <th className="px-4 py-2 text-left text-gray-600 font-semibold">Email</th> {/* New column for email */}
                   <th className="px-4 py-2 text-left text-gray-600 font-semibold">Date</th>
                   <th className="px-4 py-2 text-left text-gray-600 font-semibold">Time</th>
+                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">hospitalname</th>
+                 
                   <th className="px-4 py-2 text-left text-gray-600 font-semibold">Doctor Name</th>
                   <th className="px-4 py-2 text-left text-gray-600 font-semibold">Specialization</th>
                   <th className="px-4 py-2 text-left text-gray-600 font-semibold">Action</th>
@@ -232,6 +235,7 @@ const Appointment = () => {
                       <td className="px-4 py-2">{appointment.email}</td>
                       <td className="px-4 py-2">{new Date(appointment.date).toLocaleDateString()}</td>
                       <td className="px-4 py-2">{appointment.time}</td>
+                      <td className="px-4 py-2">{appointment.hospitalname}</td>
                       <td className="px-4 py-2">{appointment.doctorName}</td>
                       <td className="px-4 py-2">{appointment.specialization}</td>
                       <td className="px-4 py-2">

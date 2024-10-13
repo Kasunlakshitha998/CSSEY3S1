@@ -30,6 +30,10 @@ const ActualAppointmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hospitalname: {
+    type: String,
+    required: true,
+  },
   doctorName: {
     type: String,
     required: true, // Assuming doctor's name is required

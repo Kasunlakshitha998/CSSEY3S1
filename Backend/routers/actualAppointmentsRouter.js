@@ -7,7 +7,7 @@ const actualAppointmentsRouter = express.Router();
 
 // Create a new appointment
 actualAppointmentsRouter.post('/', async (req, res) => {
-  const { patientId, patientName, email, date, time, doctorName, specialization } = req.body;
+  const { patientId, patientName, email, date, time, hospitalname, doctorName, specialization } = req.body;
 
   try {
     const newAppointment = new ActualAppointment({
@@ -16,6 +16,7 @@ actualAppointmentsRouter.post('/', async (req, res) => {
       email,
       date,
       time,
+      hospitalname,
       doctorName,
       specialization,
     });
@@ -40,12 +41,12 @@ actualAppointmentsRouter.get('/', async (req, res) => {
 // Update an appointment by ID
 actualAppointmentsRouter.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { patientId, patientName, email, date, time, doctorName, specialization } = req.body;
+  const { patientId, patientName, email, date, time, hospitalname, doctorName, specialization } = req.body;
 
   try {
     const updatedAppointment = await ActualAppointment.findByIdAndUpdate(
       id,
-      { patientId, patientName, email, date, time, doctorName, specialization },
+      { patientId, patientName, email, date, time, hospitalname,doctorName, specialization },
       { new: true } // Return the updated document
     );
 
