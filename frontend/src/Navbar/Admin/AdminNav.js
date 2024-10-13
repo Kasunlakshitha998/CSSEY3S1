@@ -16,7 +16,7 @@ const AdminNav = () => {
 
   // Updated navLinks to include the Appointments section
   const navLinks = [
-    { name: 'Home', icon: <FaHome />, path: '/' },
+    { name: 'Home', icon: <FaHome />, path: '/admin' },
     { name: 'Patients', icon: <FaUser />, path: '/patients' },
     { name: 'Billing', icon: <FaFileAlt />, path: '/AllBill' },
     { name: 'Appointments', icon: <FaFileAlt />, path: '/adminappointment' }, // New link for Appointments
