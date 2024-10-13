@@ -9,6 +9,8 @@ const billRoutes = require('./routers/MedicalBillRouter');
 const appointmentRoutes = require('./routers/AppointmentRouter');
 const actualAppointmentsRouter = require('./routers/actualAppointmentsRouter');
 const DoctorAvailability = require('./routers/doctorAvailabilityRouter')
+const chatRoutes = require('./routers/ChatRouter');
+
 
 // Load environment variables from .env
 dotenv.config();
@@ -33,6 +35,8 @@ app.use('/appointments', appointmentRoutes); // Use AppointmentRouter
 app.use('/actual-appointments', actualAppointmentsRouter);
 app.use('/bills', billRoutes);
 app.use('/doctor-availability', DoctorAvailability); // New doctor availability route
+app.use('/chat', chatRoutes);
+app.use('/uploads', express.static('uploads'));
 
 const userRoutes = require('./routers/userRout');
 app.use('/user', userRoutes);
