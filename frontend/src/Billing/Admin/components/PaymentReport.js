@@ -1,0 +1,83 @@
+import React, { useState, useEffect } from 'react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from 'recharts';
+import moment from 'moment';
+import { Box, ButtonGroup, Button } from '@mui/material';
+import { getpaymentHistory } from '../../../services/BillingAPI'; // Adjust the import based on your API path
+
+const PaymentReport = () => {
+  const [payments, setPayments] = useState([]);
+  const [filter, setFilter] = useState('daily'); // Default filter
+  const [reportData, setReportData] = useState([]);
+
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const response = await getpaymentHistory();
+        setPayments(response.data);
+      } catch (error) {
+        console.error('Error fetching payment history:', error);
+      }
+    };
+
+    fetchPayments();
+  }, []);
+
+  useEffect(() => {
+    generateReportData();
+  }, [payments, filter]);
+
+  const generateReportData = () => {
+    const dataMap = {};
+
+    payments.forEach((payment) => {
+      const date = moment(payment.date).format(
+        filter === 'daily'
+          ? 'YYYY-MM-DD'
+          : filter === 'weekly'
+          ? 'YYYY-ww'
+          : 'YYYY-MM'
+      );
+
+      if (!dataMap[date]) {
+        dataMap[date] = { date, totalAmount: 0 };
+      }
+      dataMap[date].totalAmount += payment.amount;
+    });
+
+    setReportData(Object.values(dataMap));
+  };
+
+  return (
+    <Box className="bg-gray-50 p-8 rounded-md">
+      <h3 className="text-xl font-semibold mb-4 text-gray-700 text-center">
+        Payment Report
+      </h3>
+
+      <ButtonGroup variant="contained" color="primary" className="mb-4">
+        <Button onClick={() => setFilter('daily')}>Daily</Button>
+        <Button onClick={() => setFilter('weekly')}>Weekly</Button>
+        <Button onClick={() => setFilter('monthly')}>Monthly</Button>
+      </ButtonGroup>
+
+      <ResponsiveContainer width="100%" height={400}>
+        <BarChart data={reportData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Bar dataKey="totalAmount" fill="#4a90e2" />
+        </BarChart>
+      </ResponsiveContainer>
+    </Box>
+  );
+};
+
+export default PaymentReport;
