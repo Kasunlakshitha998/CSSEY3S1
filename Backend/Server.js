@@ -1,45 +1,51 @@
+// Server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const app = express();
 const mongoConnection = require('./util/MongoConnection');
 const billRoutes = require('./routers/MedicalBillRouter');
 const appointmentRoutes = require('./routers/AppointmentRouter');
+<<<<<<< Updated upstream
 const actualAppointmentsRouter = require('./routers/actualAppointmentsRouter');
 const DoctorAvailability = require('./routers/doctorAvailabilityRouter')
 const chatRoutes = require('./routers/ChatRouter');
 
+=======
+const chatRoutes = require('./routers/ChatRouter'); // Adjust the path if necessary
+>>>>>>> Stashed changes
 
 // Load environment variables from .env
 dotenv.config();
 
+// Middleware setup
+const app = express();
 app.use(bodyParser.json({ limit: '10mb' })); // Increase limit as needed
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-
-// Middleware setup
 app.use(cors());
-app.use(bodyParser.json());
 
 (async () => {
-    try {
-        await mongoConnection.connect();
-        // Start server here
-    } catch (error) {
-        console.error('Failed to connect to MongoDB', error);
-    }
+  try {
+    await mongoConnection.connect();
+  } catch (error) {
+    console.error('Failed to connect to MongoDB', error);
+  }
 })();
 
 app.use('/appointments', appointmentRoutes); // Use AppointmentRouter
 app.use('/actual-appointments', actualAppointmentsRouter);
 app.use('/bills', billRoutes);
+<<<<<<< Updated upstream
 app.use('/doctor-availability', DoctorAvailability); // New doctor availability route
 app.use('/chat', chatRoutes);
 app.use('/uploads', express.static('uploads'));
 
 const userRoutes = require('./routers/userRout');
 app.use('/user', userRoutes);
+=======
+app.use('/chat', chatRoutes); // Ensure this is correctly set up
+>>>>>>> Stashed changes
 
 // Add a base route to confirm server is running
 app.get('/', (req, res) => {

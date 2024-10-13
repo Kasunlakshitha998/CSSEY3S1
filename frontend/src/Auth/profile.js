@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import {jwtDecode} from 'jwt-decode';
+import jwtDecode from 'jwt-decode'; // Ensure this import is correct
 import { React, useState, useEffect } from 'react';
 
 const Profile = () => {
@@ -8,11 +8,13 @@ const Profile = () => {
   useEffect(() => {
     // Get the token from cookies
     const token = Cookies.get('token');
+    console.log('Token from cookies:', token); // Log the token
 
     if (token) {
       try {
         // Decode the token and set user data
         const decoded = jwtDecode(token);
+        console.log('Decoded Token:', decoded); // Log the decoded token
         setUser({ id: decoded.id, age: decoded.age });
       } catch (error) {
         console.error('Error decoding token', error);
