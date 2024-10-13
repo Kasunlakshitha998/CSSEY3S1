@@ -3,26 +3,29 @@ import axios from 'axios';
 import validator from 'validator';
 import UserNav from '../../Navbar/User/UserNav';
 import { useLocation } from 'react-router-dom';
+import { addpayment, updateBill } from '../../services/BillingAPI';
 
 const PaymentPage = () => {
   const location = useLocation();
   const { billId, amounts } = location.state || {};
   const [selectedMethod, setSelectedMethod] = useState('');
-  const [email, setEmail] = useState('testuser@example.com'); 
+  const [email, setEmail] = useState('testuser@example.com');
   const [amount, setAmount] = useState(amounts || 0);
-  const [cardNumber, setCardNumber] = useState('4111111111111111'); 
-  const [expiryDate, setExpiryDate] = useState('12/25'); 
-  const [cvv, setCvv] = useState('123'); 
+  const [cardNumber, setCardNumber] = useState('4111111111111111');
+  const [expiryDate, setExpiryDate] = useState('12/25');
+  const [cvv, setCvv] = useState('123');
   const [name, setName] = useState('John Doe');
-  const [slip, setSlip] = useState(null); 
+  const [slip, setSlip] = useState(null);
   const [errors, setErrors] = useState('');
+
+  const userId = 'U001';
 
   useEffect(() => {
     if (amounts) {
       setAmount(amounts);
     }
   }, [amounts]);
-  
+
   const handleSelectMethod = (method) => {
     setSelectedMethod(method);
     setErrors(''); // Reset errors on method change
@@ -57,6 +60,8 @@ const PaymentPage = () => {
     if (!validateFields()) return;
 
     const paymentData = {
+      billId,
+      userId,
       method: selectedMethod,
       email,
       amount,
@@ -64,11 +69,17 @@ const PaymentPage = () => {
     };
 
     try {
-      const response = await axios.post('your-api-endpoint-here', paymentData);
-      if (response.status === 200) {
+      const response = await addpayment(paymentData);
+      if (response.status) {
         console.log('Payment status updated:', response.data);
         alert('Payment Successful');
       }
+
+      if (selectedMethod == 'card') {
+        await updateBill(billId, 'paid');
+      }
+
+
     } catch (error) {
       console.error('Error updating payment status:', error);
       alert('Payment failed, please try again.');
@@ -132,6 +143,7 @@ const PaymentPage = () => {
             errors={errors}
             slip={slip} // Pass slip state
             setSlip={setSlip}
+            amount={amount}
             handleFileUpload={handleFileUpload} // Pass file upload handler
             handlePayment={handlePayment}
             setSelectedMethod={setSelectedMethod}
@@ -148,6 +160,7 @@ function PayOffline({
   errors,
   slip,
   setSlip,
+  amount,
   handleFileUpload,
   handlePayment,
   setSelectedMethod,
@@ -167,7 +180,32 @@ function PayOffline({
       <h2 className="text-xl font-semibold text-center mb-4">
         Upload Payment Slip
       </h2>
+
       {errors && <p className="text-red-500 mb-4">{errors}</p>}
+
+      {/* Dummy Bank Details Section */}
+      <div className="mb-6 p-4 bg-gray-100 rounded-lg shadow-md">
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+          Bank Details:
+        </h3>
+        <p className="text-gray-700">
+          Bank Name: <span className="font-medium">Dummy Bank</span>
+        </p>
+        <p className="text-gray-700">
+          Account Name: <span className="font-medium">Dummy Account</span>
+        </p>
+        <p className="text-gray-700">
+          Account Number: <span className="font-medium">123456789</span>
+        </p>
+        <p className="text-gray-700">
+          Branch Name & Code: <span className="font-medium">DUMMY1234</span>
+        </p>
+        <p className="text-gray-700">
+          Amount:{' '}
+          <span className="font-semibold text-blue-600">Rs. {amount}.00</span>
+        </p>
+      </div>
+
       <div
         className="border-dashed border-4 border-gray-300 p-4 text-center cursor-pointer mb-10"
         onDrop={handleDrop}

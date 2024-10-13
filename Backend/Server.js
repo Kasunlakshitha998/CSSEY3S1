@@ -11,6 +11,8 @@ const actualAppointmentsRouter = require('./routers/actualAppointmentsRouter');
 const DoctorAvailability = require('./routers/doctorAvailabilityRouter')
 const chatRoutes = require('./routers/ChatRouter');
 
+const userRoutes = require('./routers/userRout');
+const paymentHistoryRoutes = require('./routers/paymentHistoryRoutes');
 
 // Load environment variables from .env
 dotenv.config();
@@ -24,6 +26,7 @@ app.use(cors());
 (async () => {
   try {
     await mongoConnection.connect();
+    // Start server here
   } catch (error) {
     console.error('Failed to connect to MongoDB', error);
   }
@@ -36,8 +39,8 @@ app.use('/doctor-availability', DoctorAvailability); // New doctor availability 
 app.use('/chat', chatRoutes);
 app.use('/uploads', express.static('uploads'));
 
-const userRoutes = require('./routers/userRout');
 app.use('/user', userRoutes);
+app.use('/payment', paymentHistoryRoutes);
 
 // Add a base route to confirm server is running
 app.get('/', (req, res) => {
