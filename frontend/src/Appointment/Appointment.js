@@ -174,7 +174,7 @@ const Appointment = () => {
                 Time
               </label>
               <input
-                type="text"
+                type="time"
                 name="time"
                 value={appointmentData.time}
                 onChange={handleChange}
