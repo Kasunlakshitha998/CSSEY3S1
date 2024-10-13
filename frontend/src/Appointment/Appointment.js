@@ -206,12 +206,12 @@ const Appointment = () => {
         )}
 
         {/* Appointments Table */}
-        <div className="mt-8 w-full max-w-4xl bg-white rounded shadow-md overflow-hidden">
+        <div className="mt-8 w-auto  bg-white rounded shadow-md overflow-hidden">
           <h2 className="text-2xl font-bold text-center p-4">Scheduled Appointments</h2>
           {fetchingAppointments ? (
             <p className="text-center p-4">Loading appointments...</p>
           ) : (
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="w-auto divide-y divide-gray-200">
               <thead className="bg-gray-100">
                 <tr>
                   <th className="px-4 py-2 text-left text-gray-600 font-semibold">Patient ID</th>
@@ -223,7 +223,8 @@ const Appointment = () => {
                  
                   <th className="px-4 py-2 text-left text-gray-600 font-semibold">Doctor Name</th>
                   <th className="px-4 py-2 text-left text-gray-600 font-semibold">Specialization</th>
-                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">Action</th>
+                  <th className="px-4 py-2 text-left text-gray-600 font-semibold">action</th>
+                  
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -239,18 +240,18 @@ const Appointment = () => {
                       <td className="px-4 py-2">{appointment.doctorName}</td>
                       <td className="px-4 py-2">{appointment.specialization}</td>
                       <td className="px-4 py-2">
-                        <button
-                          onClick={() => handleDelete(appointment._id)}
-                          className="text-red-600 hover:text-red-800"
-                        >
-                          Delete
-                        </button>
+                      <button
+                       onClick={() => handleDelete(appointment._id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-300"
+                      >
+                      Delete
+                      </button>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="8" className="text-center p-4">No appointments found.</td>
+                    <td colSpan="9" className="text-center p-4">No appointments found.</td>
                   </tr>
                 )}
               </tbody>
