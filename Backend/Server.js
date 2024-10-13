@@ -10,7 +10,8 @@ const appointmentRoutes = require('./routers/AppointmentRouter');
 const actualAppointmentsRouter = require('./routers/actualAppointmentsRouter');
 const DoctorAvailability = require('./routers/doctorAvailabilityRouter')
 const chatRoutes = require('./routers/ChatRouter');
-
+const path = require('path');
+const chatPatientRoutes = require('./routers/chatPatients');
 
 // Load environment variables from .env
 dotenv.config();
@@ -34,7 +35,8 @@ app.use('/actual-appointments', actualAppointmentsRouter);
 app.use('/bills', billRoutes);
 app.use('/doctor-availability', DoctorAvailability); // New doctor availability route
 app.use('/chat', chatRoutes);
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/chatPatients', chatPatientRoutes);
 
 const userRoutes = require('./routers/userRout');
 app.use('/user', userRoutes);

@@ -8,9 +8,9 @@ const DoctorNav = ({ sidebarOpen, toggleSidebar }) => {
 
   const navLinks = [
     { name: 'Home', icon: <FaHome />, path: '/dashboard' },
-    { name: 'Patients', icon: <FaUser />, path: '/patients' },
+    { name: 'Patients', icon: <FaUser />, path: '/adminappointment' },
     { name: 'Billing', icon: <FaFileAlt />, path: '/AllBill' },
-    { name: 'Appointments', icon: <FaFileAlt />, path: '/adminappointment' },
+    { name: 'Appointments', icon: <FaFileAlt />, path: '/doctorappointments' },
     { name: 'Logout', icon: <FaSignOutAlt />, path: '/logout' },
   ];
 

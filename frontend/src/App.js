@@ -12,12 +12,13 @@ import UserDash from './Home/UserDash';
 import ProtectedRoute from './Auth/ProtectedRoute';
 
 import DoctorDash from './Home/DoctorDash';
-import DoctorDashboard from './Pages/DoctorDashboard'; 
 import DoctorAppointments from './Pages/DoctorAppointments';
 import Reminders from './Pages/Reminders'; 
 import Reports from './Pages/Reports';
 import VideoConsultation from './Pages/VideoConsultation'; 
 import Chat from './Pages/Chat'; 
+import ChatHistory from './Pages/ChatHistory';
+import Message from './Pages/Message';
 
 import UserTypeSelection from './Auth/UserTypeSelection'; // Import UserTypeSelection
 import Appointment from './Appointment/Appointment'; // Import the Appointment component
@@ -107,12 +108,16 @@ function App() {
         <Route path="/adminappointment" element={<AdminAppointments />} /> {/* New Appointment route */}
         <Route path="/doctor-availability" element={<DoctorAvailability />} />
         
-        <Route path="/dashboard" element={<DoctorDashboard />} />
+        <Route path="/dashboard" element={<DoctorDash />} />
         <Route path="/doctorappointments" element={<DoctorAppointments />} />
         <Route path="/reminders" element={<Reminders />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/video-consultation" element={<VideoConsultation />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/chathistory" element={<ChatHistory />} /> 
+        <Route path="/message/:patientId" element={<Message />} />
+
+      
       </Routes>
     </Router>
   );
