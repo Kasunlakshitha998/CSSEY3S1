@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import DoctorNav from '../Navbar/Doctor/DoctorNav'; // Import the collapsible navigation component
@@ -10,23 +9,10 @@ const DoctorDashboard = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen); // Toggle sidebar visibility
   };
-=======
-import React from 'react'
-import DoctorNav from '../Navbar/Doctor/DoctorNav'
->>>>>>> Stashed changes
 
   return (
-<<<<<<< Updated upstream
     <div>
       <DoctorNav sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} /> {/* Pass state and toggle function */}
-=======
-    <>
-      <DoctorNav />
-      <div>DoctorDash</div>
-    </>
-  );
-}
->>>>>>> Stashed changes
 
       <div className={`p-8 bg-gray-100 min-h-screen ${sidebarOpen ? 'ml-64' : 'ml-16'}`}> {/* Adjust left margin based on sidebar state */}
         <h2 className="text-2xl font-semibold mb-4">Doctor Dashboard</h2>

@@ -12,29 +12,17 @@ import UserDash from './Home/UserDash';
 import ProtectedRoute from './Auth/ProtectedRoute';
 
 import DoctorDash from './Home/DoctorDash';
-<<<<<<< Updated upstream
 import DoctorDashboard from './Pages/DoctorDashboard'; 
 import DoctorAppointments from './Pages/DoctorAppointments';
 import Reminders from './Pages/Reminders'; 
 import Reports from './Pages/Reports';
 import VideoConsultation from './Pages/VideoConsultation'; 
 import Chat from './Pages/Chat'; 
-=======
-import Chat from './pages/Chat';
->>>>>>> Stashed changes
 
 import UserTypeSelection from './Auth/UserTypeSelection'; // Import UserTypeSelection
 import Appointment from './Appointment/Appointment'; // Import the Appointment component
 import AdminAppointments from './Appointment/AdminAppointments';
 import DoctorAvailability from './Appointment/DoctorAvailability ';
-
-import DoctorDashboard from './pages/DoctorDashboard';
-import DoctorRegister from './pages/DoctorRegister'; // Assuming registration is a separate component
-import Appointments from './pages/Appointments';
-import Patients from './pages/Patients';
-import Reports from './pages/Reports';
-import Settings from './pages/Settings';
-
 
 function App() {
 
@@ -117,7 +105,6 @@ function App() {
         <Route path="/AllBill" element={<AllBill />} />
         <Route path="/appointment" element={<Appointment />} /> {/* New Appointment route */}
         <Route path="/adminappointment" element={<AdminAppointments />} /> {/* New Appointment route */}
-<<<<<<< Updated upstream
         <Route path="/doctor-availability" element={<DoctorAvailability />} />
         
         <Route path="/dashboard" element={<DoctorDashboard />} />
@@ -126,20 +113,6 @@ function App() {
         <Route path="/reports" element={<Reports />} />
         <Route path="/video-consultation" element={<VideoConsultation />} />
         <Route path="/chat" element={<Chat />} />
-=======
-
-        <Route path="/dashboard" element={<DoctorDashboard />} />
-        <Route path="/chat" element={<Chat />} /> {/* Add the Chat route */}
-
-        
-        <Route path="/register" element={<DoctorRegister />} />
-        <Route path="/register" element={<DoctorRegister />} />
-        <Route path="/appointments" element={<Appointments />} />
-        <Route path="/patients" element={<Patients />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/settings" element={<Settings />} />
-    
->>>>>>> Stashed changes
       </Routes>
     </Router>
   );
