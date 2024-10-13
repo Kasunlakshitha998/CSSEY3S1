@@ -3,15 +3,15 @@ import { getBillingBYUserId } from '../../services/BillingAPI';
 import { useNavigate } from 'react-router-dom';
 import BillHistory from './components/BillHistory';
 import OutstandingBills from './components/OutstandingBills';
-import Header from './../../Navbar/User/Header';
 import Usernav from '../../Navbar/User/UserNav';
+import Cookies from 'js-cookie';
 
 const BillList = () => {
   const [bills, setBills] = useState([]);
   const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const userId = 'U001';
+  const userId = Cookies.get('userId');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const BillList = () => {
 
   const filteredOutstandingBills = bills.filter(
     (bill) =>
-      bill.paidStatus === 'unpaid' &&
+      bill.paidStatus === 'unPaid' &&
       bill.patientName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 

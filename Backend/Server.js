@@ -1,4 +1,3 @@
-// Server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -12,6 +11,8 @@ const DoctorAvailability = require('./routers/doctorAvailabilityRouter')
 const chatRoutes = require('./routers/ChatRouter');
 const path = require('path');
 const chatPatientRoutes = require('./routers/chatPatients');
+const userRoutes = require('./routers/userRout');
+const paymentHistoryRoutes = require('./routers/paymentHistoryRoutes');
 
 // Load environment variables from .env
 dotenv.config();
@@ -25,6 +26,7 @@ app.use(cors());
 (async () => {
   try {
     await mongoConnection.connect();
+    // Start server here
   } catch (error) {
     console.error('Failed to connect to MongoDB', error);
   }
@@ -38,8 +40,8 @@ app.use('/chat', chatRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/chatPatients', chatPatientRoutes);
 
-const userRoutes = require('./routers/userRout');
 app.use('/user', userRoutes);
+app.use('/payment', paymentHistoryRoutes);
 
 // Add a base route to confirm server is running
 app.get('/', (req, res) => {

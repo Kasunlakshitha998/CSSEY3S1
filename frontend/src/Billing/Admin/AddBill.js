@@ -19,7 +19,7 @@ const AddBill = () => {
   const [policyNumber, setPolicyNumber] = useState('');
   const [paidAmount, setPaidAmount] = useState(0);
   const [balanceAmount, setBalanceAmount] = useState(0);
-  const [paidStatus, setPaidStatus] = useState('pending');
+  const [paidStatus, setPaidStatus] = useState('unPaid');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
     patientName: '',
@@ -64,6 +64,7 @@ const AddBill = () => {
       totalAmount,
       paymentMethod,
       paidAmount,
+      paidStatus,
       balanceAmount,
       insuranceDetails:
         paymentMethod === 'Insurance'

@@ -1,4 +1,4 @@
-import { FaSearch, FaEye } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
 
 export default function BillCard({ bill, navigate }) {
   return (
@@ -9,13 +9,22 @@ export default function BillCard({ bill, navigate }) {
           className="flex justify-between items-center bg-white shadow rounded-lg p-4"
         >
           <div>
-            <p className="font-semibold">{bill.hospitalName}</p>
-            <p className="text-sm text-gray-500">{bill.date}</p>
-            <p className="text-lg font-semibold">
-              Balance: ${bill.totalAmount}
+            <p className="font-semibold">
+              Appoinment Number : {bill.appointmentID}
             </p>
-            <p className="text-sm">Status: {bill.paidStatus}</p>
+            <p className="text-lg font-semibold">
+              Balance: Rs. {bill.balanceAmount.toFixed(2)}
+            </p>
+            <p className="text-sm">Payment Status: {bill.paidStatus}</p>
+            <p className="text-sm text-gray-500">
+              {new Date(bill.issuedDate).toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </p>
           </div>
+
           {/* Button to navigate to bill details */}
           <button
             onClick={() => navigate(`/billDetails/${bill._id}`)}

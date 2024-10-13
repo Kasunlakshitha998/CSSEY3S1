@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { getAllBill, deleteBill } from '../../services/BillingAPI';
 import EditBillModal from './components/EditBillModal';
 import CountCard from './components/CountCard';
 import AdminNav from '../../Navbar/Admin/AdminNav';
-import { Link } from 'react-router-dom';
+import PaymentHistory from './components/PaymentHistory';
+import BillHistoryList from './components/BillHistoryList';
 
 function AllBill() {
   const [bills, setBills] = useState([]);
@@ -17,6 +17,7 @@ function AllBill() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editingBill, setEditingBill] = useState(null);
+  const [activeTab, setActiveTab] = useState('bills'); // Add activeTab state for tab navigation
 
   useEffect(() => {
     fetchBills();
@@ -93,134 +94,58 @@ function AllBill() {
     <>
       <AdminNav />
       <div className="container mx-auto mt-8 pt-20 pl-48">
-        <h2 className="text-3xl font-semibold mb-6 text-gray-700 text-center">
-          Medical Bills
-        </h2>
-
-        {/* Totals Cards */}
-        <CountCard bills={bills} />
-
-        <div className="bg-gray-50 p-8 rounded-md">
-          <div className="mb-6 flex justify-center">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={handleSearch}
-              placeholder="Search by Patient Name or Appointment ID"
-              className="w-full sm:w-1/2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
-            />
-            <Link
-              to="/AddNewBill"
-              className="flex justify-center items-center bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-900 focus:bg-blue-800 focus:outline-none transition-all duration-300 ml-12"
-            >
-              Add New Bill
-            </Link>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
-              <thead>
-                <tr className="bg-gray-100 text-left">
-                  <th className="py-4 px-6 text-gray-600 font-medium">
-                    Patient Name
-                  </th>
-                  <th className="py-4 px-6 text-gray-600 font-medium">
-                    Appointment ID
-                  </th>
-                  <th className="py-4 px-6 text-gray-600 font-medium">
-                    Total Amount
-                  </th>
-                  <th className="py-4 px-6 text-gray-600 font-medium">
-                    Paid Amount
-                  </th>
-                  <th className="py-4 px-6 text-gray-600 font-medium">
-                    Balance
-                  </th>
-                  <th className="py-4 px-6 text-gray-600 font-medium">
-                    Payment Status
-                  </th>
-                  <th className="py-4 px-6 text-gray-600 font-medium">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentBills.map((bill) => (
-                  <tr
-                    key={bill._id}
-                    className="border-t border-gray-200 hover:bg-gray-50"
-                  >
-                    <td className="py-4 px-6">{bill.patientName}</td>
-                    <td className="py-4 px-6">{bill.appointmentID}</td>
-                    <td className="py-4 px-6">
-                      ${Number(bill.totalAmount).toFixed(2)}
-                    </td>
-                    <td className="py-4 px-6">
-                      ${Number(bill.paidAmount).toFixed(2)}
-                    </td>
-                    <td className="py-4 px-6">
-                      ${Number(bill.balanceAmount).toFixed(2)}
-                    </td>
-                    <td className="py-4 px-6">
-                      <span
-                        className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full ${
-                          bill.paidStatus === 'paid'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}
-                      >
-                        {bill.paidStatus}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 flex space-x-3">
-                      <button
-                        className="text-blue-500 hover:text-blue-700"
-                        onClick={() => editBill(bill)}
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="text-red-500 hover:text-red-700"
-                        onClick={() => handleDeleteBill(bill._id)}
-                      >
-                        <FaTrashAlt />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="flex justify-center mt-6">
-            {Array.from(
-              { length: Math.ceil(filteredBills.length / billsPerPage) },
-              (_, i) => (
-                <button
-                  key={i}
-                  onClick={() => paginate(i + 1)}
-                  className={`mx-1 px-3 py-1 border rounded-lg ${
-                    currentPage === i + 1
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-white text-blue-500 border-blue-500'
-                  } hover:bg-blue-500 hover:text-white transition duration-300`}
-                >
-                  {i + 1}
-                </button>
-              )
-            )}
-          </div>
+        {/* Tabs for Bills and Payment History */}
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={() => setActiveTab('bills')}
+            className={`px-6 py-2 text-sm font-medium rounded-t-lg transition-colors duration-300 ease-in-out shadow ${
+              activeTab === 'bills'
+                ? 'bg-purple-600 text-white border-b-2 border-purple-600'
+                : 'bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-600'
+            }`}
+          >
+            Bills
+          </button>
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`ml-4 px-6 py-2 text-sm font-medium rounded-t-lg transition-colors duration-300 ease-in-out shadow ${
+              activeTab === 'history'
+                ? 'bg-purple-600 text-white border-b-2 border-purple-600'
+                : 'bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-600'
+            }`}
+          >
+            Payment History
+          </button>
         </div>
 
-        {/* Edit Form Modal */}
+        {activeTab === 'bills' && (
+          <>
+            {/* Totals Cards */}
+            <CountCard bills={bills} />
+
+            <BillHistoryList
+              searchTerm={searchTerm}
+              handleSearch={handleSearch}
+              currentBills={currentBills}
+              filteredBills={filteredBills}
+              editBill={editBill}
+              handleDeleteBill={handleDeleteBill}
+              billsPerPage={billsPerPage}
+              paginate={paginate}
+              currentPage={currentPage}
+            />
+          </>
+        )}
+
+        {/* Payment History Tab Content */}
+        {activeTab === 'history' && <PaymentHistory />}
+
+        {/* Edit Bill Modal */}
         {isEditing && (
           <EditBillModal
             bill={editingBill}
+            onClose={() => setIsEditing(false)}
             onUpdate={updateBill}
-            onClose={() => {
-              setIsEditing(false);
-              setEditingBill(null);
-            }}
           />
         )}
       </div>
@@ -229,3 +154,7 @@ function AllBill() {
 }
 
 export default AllBill;
+
+
+
+

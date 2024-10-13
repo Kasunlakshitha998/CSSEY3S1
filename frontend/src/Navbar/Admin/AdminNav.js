@@ -20,8 +20,7 @@ const AdminNav = () => {
     { name: 'Home', icon: <FaHome />, path: '/admin' },
     { name: 'Patients', icon: <FaUser />, path: '/patients' },
     { name: 'Billing', icon: <FaFileAlt />, path: '/AllBill' },
-    { name: 'Appointments', icon: <FaFileAlt />, path: '/adminappointment' }, // New link for Appointments
-    { name: 'Logout', icon: <FaSignOutAlt />, path: '/logout' },
+    { name: 'Appointments', icon: <FaFileAlt />, path: '/adminappointment' }, 
     { name: 'Doctor Availability', icon: <FaCalendarCheck />, path: '/doctor-availability' }, // New Doctor Availability link
   ];
 

@@ -45,15 +45,10 @@ router.get(
 
 // Update payment status of a bill
 router.put(
-  '/:id/payment',
-  asyncHandler(async (req, res) => {
-    const updatedBill = await updateBillPayment(
-      req.params.id,
-      req.body.paidStatus
-    );
-    res.json(updatedBill);
-  })
+  '/payment/:id',
+  asyncHandler(updateBillPayment) // Directly passing the function as the handler
 );
+
 
 // Get payment history for a user
 router.get(

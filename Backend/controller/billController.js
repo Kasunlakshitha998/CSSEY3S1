@@ -14,7 +14,7 @@ const createBill = async (billData) => {
 // Get all bills
 const getAllBills = (req, res) => {
   MedicalBill.find()
-    .sort({ createdAt: -1 })
+    .sort({ issuedDate: -1 })
     .then((MedicalBills) => {
       res.json(MedicalBills);
     })
@@ -70,20 +70,34 @@ const getPaymentHistoryByUserId = async (userId) => {
   }
 };
 
-// Update the payment status of a bill
-const updateBillPayment = async (billId, paidStatus) => {
+const updateBillPayment = async (req, res) => {
+  const { id: billId } = req.params;
+  const { paidStatus } = req.body;
+
   try {
-    const updatedBill = await MedicalBill.findByIdAndUpdate(
-      billId,
-      { paidStatus: paidStatus },
-      { new: true }
-    );
-    if (!updatedBill) throw new Error('Bill not found');
-    return updatedBill;
+    const payment = await MedicalBill.findById(billId);
+
+    if (!payment) {
+      console.error('Payment not found');
+      return res.status(404).json({ message: 'Payment not found' });
+    }
+
+    payment.paidStatus = paidStatus;
+    await payment.save();
+
+    return res.status(200).json({
+      message: `Payment status has been updated to ${paidStatus}`,
+      payment,
+    });
   } catch (err) {
-    throw new Error('Error updating the payment status: ' + err.message);
+    console.error(`Error updating the payment status: ${err.message}`, err);
+    return res.status(500).json({
+      message: 'Error updating the payment status',
+      error: err.message,
+    });
   }
 };
+
 
 // Delete a bill
 const deleteBill = (req, res) => {

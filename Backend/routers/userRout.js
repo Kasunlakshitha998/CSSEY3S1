@@ -9,6 +9,7 @@ router.use(cookieParser());
 const dotenv = require('dotenv');
 dotenv.config();  
 
+
 // Register Route
 router.post('/register', async (req, res) => {
   const { name, email, password, confirmPassword, age, type } = req.body;
@@ -23,17 +24,23 @@ router.post('/register', async (req, res) => {
   }
 
   try {
-    // Check if the user exists
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: 'User already exists' });
+    // Check if the user exists by email
+    let userByEmail = await User.findOne({ email });
+    if (userByEmail) {
+      return res.status(400).json({ msg: 'User already exists with this email' });
+    }
+
+    // Check if the user exists by name
+    let userByName = await User.findOne({ name });
+    if (userByName) {
+      return res.status(400).json({ msg: 'User already exists with this name' });
     }
 
     // Hash password and create user
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    user = new User({
+    const user = new User({
       name,
       email,
       age,
@@ -51,6 +58,7 @@ router.post('/register', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 
 // Login Route
 router.route('/login').post((req, res) => {
@@ -91,23 +99,30 @@ router.route('/login').post((req, res) => {
     });
 });
 
-// Update payment status route
-router.post('/updatePaymentStatus/:userId', async (req, res) => {
-  const { userId } = req.params; // Extract userId from the request params
-  const { isPaid } = req.body; // Extract isPaid from the request body
+
+// Route to search for users by username
+router.get('/search', async (req, res) => {
+  const { username } = req.query;
+
+  if (!username) {
+    return res.status(400).json({ msg: 'Please provide a username to search' });
+  }
 
   try {
-    // Find user by userId and update isPaid to 'yes'
-    const updatedUser = await User.findByIdAndUpdate(userId, { isPaid }, { new: true });
-
-    if (updatedUser) {
-      res.status(200).json({ message: 'Payment status updated successfully.', user: updatedUser });
-    } else {
-      res.status(404).json({ message: 'User not found.' });
+    const users = await User.find({
+      name: { $regex: username, $options: 'i' },
+    }).select('name _id');
+    if (!users.length) {
+      return res.status(404).json({ msg: 'No users found' });
     }
-  } catch (error) {
-    console.error('Error updating payment status:', error);
-    res.status(500).json({ message: 'Error updating payment status.', error });
+    const userSuggestions = users.map((user) => ({
+      username: user.name,
+      id: user._id,
+    }));
+    res.json(userSuggestions);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
   }
 });
 
@@ -122,4 +137,20 @@ router.get('/users', async (req, res) => {
   }
 });
 
+router.get('/initial', async (req, res) => {
+  try {
+    // Fetch most active or recent users, you can customize this query based on your data
+    const users = await User.find()
+      .sort({ activity: -1 })
+      .limit(10)
+      .select('name _id');
+    res.json(users.map((user) => ({ username: user.name, id: user._id })));
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+
 module.exports = router;
+
