@@ -94,16 +94,14 @@ function AllBill() {
     <>
       <AdminNav />
       <div className="container mx-auto mt-8 pt-20 pl-48">
-        
-
         {/* Tabs for Bills and Payment History */}
         <div className="flex justify-center mb-6">
           <button
             onClick={() => setActiveTab('bills')}
             className={`px-6 py-2 text-sm font-medium rounded-t-lg transition-colors duration-300 ease-in-out shadow ${
               activeTab === 'bills'
-                ? 'bg-blue-600 text-white border-b-2 border-blue-600'
-                : 'bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600'
+                ? 'bg-purple-600 text-white border-b-2 border-purple-600'
+                : 'bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-600'
             }`}
           >
             Bills
@@ -112,8 +110,8 @@ function AllBill() {
             onClick={() => setActiveTab('history')}
             className={`ml-4 px-6 py-2 text-sm font-medium rounded-t-lg transition-colors duration-300 ease-in-out shadow ${
               activeTab === 'history'
-                ? 'bg-blue-600 text-white border-b-2 border-blue-600'
-                : 'bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-600'
+                ? 'bg-purple-600 text-white border-b-2 border-purple-600'
+                : 'bg-gray-100 text-gray-600 hover:bg-purple-100 hover:text-purple-600'
             }`}
           >
             Payment History

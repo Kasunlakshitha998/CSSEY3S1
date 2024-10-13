@@ -32,7 +32,6 @@ const MedicalBillSchema = new mongoose.Schema({
   paidStatus: {
     type: String,
     required: true,
-    default: 'pending',
   },
   totalAmount: {
     type: Number,

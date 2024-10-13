@@ -16,10 +16,10 @@ const PaymentDetails = ({
 
   useEffect(() => {
     if (balanceAmount === 0) {
-      setPaidStatus('confirm'); // Automatically set to "Confirm" when balance is 0
+      setPaidStatus('paid'); // Automatically set to "Confirm" when balance is 0
     }
     else {
-      setPaidStatus('pending');
+      setPaidStatus('unPaid');
     }
   }, [balanceAmount]); 
 
@@ -102,12 +102,12 @@ const PaymentDetails = ({
       <div>
         <label className="block text-gray-700">Payment Status:</label>
         <select
-          className="block w-full px-3 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
+          className="block w-full px-3 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-purple-300"
           value={paidStatus}
           onChange={(e) => setPaidStatus(e.target.value)}
         >
-          <option value="pending">Pending</option>
-          <option value="confirm">Confirm</option>
+          <option value="unPaid">Pending</option>
+          <option value="paid">Confirm</option>
         </select>
       </div>
     </div>

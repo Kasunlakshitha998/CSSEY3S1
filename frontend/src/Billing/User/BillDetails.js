@@ -283,7 +283,7 @@ const BillDetails = () => {
             </PDFDownloadLink>
 
             {/* Show "Pay Bill" button only if payment is pending */}
-            {bill.paidStatus === 'unpaid' && (
+            {bill.paidStatus === 'unPaid' && (
               <button
                 className="bg-green-600 text-white px-6 py-3 w-32 rounded-md shadow-md hover:bg-green-700 transition-all duration-200 mx-5 font-semibold"
                 onClick={handleNavigate}

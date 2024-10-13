@@ -17,7 +17,7 @@ const EditBillModal = ({ bill, onUpdate, onClose }) => {
     if (calculatedBalance === 0) {
       setPaidStatus('paid');
     } else {
-      setPaidStatus('unpaid');
+      setPaidStatus('unPaid');
     }
   }, [totalAmount, paidAmount]);
 
@@ -97,7 +97,7 @@ const EditBillModal = ({ bill, onUpdate, onClose }) => {
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
             >
               <option value="paid">Paid</option>
-              <option value="unpaid">Unpaid</option>
+              <option value="unPaid">Unpaid</option>
             </select>
           </div>
           <div className="flex justify-end">

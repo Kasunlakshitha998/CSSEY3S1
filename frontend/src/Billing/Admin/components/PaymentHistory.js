@@ -88,7 +88,7 @@ export default function PaymentHistory() {
             selectsStart
             startDate={startDate}
             endDate={endDate}
-            className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-400"
             placeholderText="Select start date"
           />
         </div>
@@ -101,7 +101,7 @@ export default function PaymentHistory() {
             startDate={startDate}
             endDate={endDate}
             minDate={startDate}
-            className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-400"
             placeholderText="Select end date"
           />
         </div>
@@ -113,7 +113,7 @@ export default function PaymentHistory() {
         </button>
         <button
           onClick={() => setIsReportModalOpen(true)}
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mt-6"
+          className="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-md mt-6"
         >
           Show Report
         </button>
@@ -145,7 +145,7 @@ export default function PaymentHistory() {
                   {new Date(payment.date).toLocaleDateString()}
                 </td>
                 <td className="py-4 px-6">{payment.email || 'Unknown'}</td>
-                <td className="py-4 px-6">${payment.amount.toFixed(2)}</td>
+                <td className="py-4 px-6">Rs. {payment.amount.toFixed(2)}</td>
                 <td className="py-4 px-6">
                   {payment.method === 'offline' ? 'Offline' : 'Online'}
                 </td>

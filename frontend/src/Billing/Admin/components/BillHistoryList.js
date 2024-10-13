@@ -22,11 +22,11 @@ export default function BillHistoryList({
           value={searchTerm}
           onChange={handleSearch}
           placeholder="Search by Patient Name or Appointment ID"
-          className="w-full sm:w-1/2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
+          className="w-full sm:w-1/2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-purple-500"
         />
         <Link
           to="/AddNewBill"
-          className="flex justify-center items-center bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-900 focus:bg-blue-800 focus:outline-none transition-all duration-300 ml-12"
+          className="flex justify-center items-center bg-purple-600 text-white text-center px-4 py-2 rounded-lg hover:bg-purple-900 focus:bg-purple-800 focus:outline-none transition-all duration-300 ml-12"
         >
           Add New Bill
         </Link>
@@ -64,13 +64,13 @@ export default function BillHistoryList({
                 <td className="py-4 px-6">{bill.patientName}</td>
                 <td className="py-4 px-6">{bill.appointmentID}</td>
                 <td className="py-4 px-6">
-                  ${Number(bill.totalAmount).toFixed(2)}
+                  Rs. {Number(bill.totalAmount).toFixed(2)}
                 </td>
                 <td className="py-4 px-6">
-                  ${Number(bill.paidAmount).toFixed(2)}
+                  Rs. {Number(bill.paidAmount).toFixed(2)}
                 </td>
                 <td className="py-4 px-6">
-                  ${Number(bill.balanceAmount).toFixed(2)}
+                  Rs. {Number(bill.balanceAmount).toFixed(2)}
                 </td>
                 <td className="py-4 px-6">
                   <span
@@ -85,7 +85,7 @@ export default function BillHistoryList({
                 </td>
                 <td className="py-4 px-6 flex space-x-3">
                   <button
-                    className="text-blue-500 hover:text-blue-700"
+                    className="text-purple-500 hover:text-purple-700"
                     onClick={() => editBill(bill)}
                   >
                     <FaEdit />
@@ -114,8 +114,8 @@ export default function BillHistoryList({
               onClick={() => paginate(i + 1)}
               className={`mx-1 px-3 py-1 border rounded-lg ${
                 currentPage === i + 1
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-white text-blue-500'
+                  ? 'bg-purple-500 text-white'
+                  : 'bg-white text-purple-500'
               }`}
             >
               {i + 1}

@@ -4,6 +4,7 @@ import validator from 'validator';
 import UserNav from '../../Navbar/User/UserNav';
 import { useLocation } from 'react-router-dom';
 import { addpayment, updateBill } from '../../services/BillingAPI';
+import Cookies from 'js-cookie';
 
 const PaymentPage = () => {
   const location = useLocation();
@@ -18,7 +19,7 @@ const PaymentPage = () => {
   const [slip, setSlip] = useState(null);
   const [errors, setErrors] = useState('');
 
-  const userId = 'U001';
+  const userId = Cookies.get('userId');
 
   useEffect(() => {
     if (amounts) {
