@@ -8,6 +8,7 @@ const mongoConnection = require('./util/MongoConnection');
 const billRoutes = require('./routers/MedicalBillRouter');
 const appointmentRoutes = require('./routers/AppointmentRouter');
 const actualAppointmentsRouter = require('./routers/actualAppointmentsRouter');
+const DoctorAvailability = require('./routers/doctorAvailabilityRouter')
 
 // Load environment variables from .env
 dotenv.config();
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 app.use('/appointments', appointmentRoutes); // Use AppointmentRouter
 app.use('/actual-appointments', actualAppointmentsRouter);
 app.use('/bills', billRoutes);
+app.use('/doctor-availability', DoctorAvailability); // New doctor availability route
 
 const userRoutes = require('./routers/userRout');
 app.use('/user', userRoutes);

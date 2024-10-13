@@ -5,6 +5,7 @@ import {
   FaUser,
   FaFileAlt,
   FaSignOutAlt,
+  FaCalendarCheck,
   FaUserCircle,
   FaBars,
 } from 'react-icons/fa';
@@ -21,6 +22,7 @@ const AdminNav = () => {
     { name: 'Billing', icon: <FaFileAlt />, path: '/AllBill' },
     { name: 'Appointments', icon: <FaFileAlt />, path: '/adminappointment' }, // New link for Appointments
     { name: 'Logout', icon: <FaSignOutAlt />, path: '/logout' },
+    { name: 'Doctor Availability', icon: <FaCalendarCheck />, path: '/doctor-availability' }, // New Doctor Availability link
   ];
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);

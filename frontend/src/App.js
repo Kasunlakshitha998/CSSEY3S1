@@ -16,6 +16,7 @@ import DoctorDash from './Home/DoctorDash';
 import UserTypeSelection from './Auth/UserTypeSelection'; // Import UserTypeSelection
 import Appointment from './Appointment/Appointment'; // Import the Appointment component
 import AdminAppointments from './Appointment/AdminAppointments';
+import DoctorAvailability from './Appointment/DoctorAvailability ';
 
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
         <Route path="/AllBill" element={<AllBill />} />
         <Route path="/appointment" element={<Appointment />} /> {/* New Appointment route */}
         <Route path="/adminappointment" element={<AdminAppointments />} /> {/* New Appointment route */}
+        <Route path="/doctor-availability" element={<DoctorAvailability />} />
         
       </Routes>
     </Router>
