@@ -32,11 +32,7 @@ router.post('/messages', upload.single('file'), async (req, res) => {
     const newMessage = new ChatMessage({
         sender,
         receiver,
-<<<<<<< Updated upstream
         message: fileUrl ? null : message, // Set message to null if a file is uploaded
-=======
-        message: req.file ? null : message, // Set message to null if an image is sent
->>>>>>> Stashed changes
         file: fileUrl, // Save the file URL if an image is sent
     });
 
@@ -49,10 +45,6 @@ router.post('/messages', upload.single('file'), async (req, res) => {
     }
 });
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 // Get messages for a specific patient or doctor
 router.get('/messages/:receiverId', async (req, res) => {
     const { receiverId } = req.params;
