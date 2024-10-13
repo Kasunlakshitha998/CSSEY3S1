@@ -7,14 +7,10 @@ const dotenv = require('dotenv');
 const mongoConnection = require('./util/MongoConnection');
 const billRoutes = require('./routers/MedicalBillRouter');
 const appointmentRoutes = require('./routers/AppointmentRouter');
-<<<<<<< Updated upstream
 const actualAppointmentsRouter = require('./routers/actualAppointmentsRouter');
 const DoctorAvailability = require('./routers/doctorAvailabilityRouter')
 const chatRoutes = require('./routers/ChatRouter');
 
-=======
-const chatRoutes = require('./routers/ChatRouter'); // Adjust the path if necessary
->>>>>>> Stashed changes
 
 // Load environment variables from .env
 dotenv.config();
@@ -36,16 +32,12 @@ app.use(cors());
 app.use('/appointments', appointmentRoutes); // Use AppointmentRouter
 app.use('/actual-appointments', actualAppointmentsRouter);
 app.use('/bills', billRoutes);
-<<<<<<< Updated upstream
 app.use('/doctor-availability', DoctorAvailability); // New doctor availability route
 app.use('/chat', chatRoutes);
 app.use('/uploads', express.static('uploads'));
 
 const userRoutes = require('./routers/userRout');
 app.use('/user', userRoutes);
-=======
-app.use('/chat', chatRoutes); // Ensure this is correctly set up
->>>>>>> Stashed changes
 
 // Add a base route to confirm server is running
 app.get('/', (req, res) => {
