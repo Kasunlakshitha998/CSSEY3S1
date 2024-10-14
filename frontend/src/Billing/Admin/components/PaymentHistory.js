@@ -35,7 +35,7 @@ export default function PaymentHistory() {
     try {
       await paymentApproved(id, status);
 
-      if (status == 'approved') {
+      if (status === 'approved') {
         console.log(billId)
         await updateBill(billId, 'paid')
       }
@@ -232,7 +232,7 @@ export default function PaymentHistory() {
       {/* Modal for Payment Report */}
       {isReportModalOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg relative max-w-4xl">
+          <div className="max-w-4xl bg-white p-8 rounded-lg shadow-lg relative ">
             <button
               className="absolute size-8 text-3xl top-2 right-2 text-red-500 hover:text-red-700"
               onClick={() => setIsReportModalOpen(false)}
@@ -242,7 +242,7 @@ export default function PaymentHistory() {
             <h4 className="text-xl font-semibold mb-4 text-gray-700">
               Payment Report
             </h4>
-            <PaymentReport /> {/* Include the PaymentReport component */}
+            <PaymentReport payment={payments} /> {/* Include the PaymentReport component */}
           </div>
         </div>
       )}

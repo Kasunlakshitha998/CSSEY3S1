@@ -4,15 +4,17 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoConnection = require('./util/MongoConnection');
-const billRoutes = require('./routers/MedicalBillRouter');
-const appointmentRoutes = require('./routers/AppointmentRouter');
-const actualAppointmentsRouter = require('./routers/actualAppointmentsRouter');
-const DoctorAvailability = require('./routers/doctorAvailabilityRouter')
-const chatRoutes = require('./routers/ChatRouter');
+const billRoutes = require('./routes/MedicalBillRouter');
+const appointmentRoutes = require('./routes/AppointmentRouter');
+const actualAppointmentsRouter = require('./routes/actualAppointmentsRouter');
+const DoctorAvailability = require('./routes/doctorAvailabilityRouter')
+const chatRoutes = require('./routes/ChatRouter');
 const path = require('path');
-const chatPatientRoutes = require('./routers/chatPatients');
-const userRoutes = require('./routers/userRout');
-const paymentHistoryRoutes = require('./routers/paymentHistoryRoutes');
+const chatPatientRoutes = require('./routes/chatPatients');
+const userRoutes = require('./routes/userRout');
+const paymentHistoryRoutes = require('./routes/paymentHistoryRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const patientRoutes = require('./routes/patientRoutes');
 
 // Load environment variables from .env
 dotenv.config();
@@ -42,6 +44,14 @@ app.use('/chatPatients', chatPatientRoutes);
 
 app.use('/user', userRoutes);
 app.use('/payment', paymentHistoryRoutes);
+// Use routes
+app.use('/api/admin', adminRoutes);
+app.use('/api/patient', patientRoutes);
+app.use('/api/user', userRoutes);
+
+// Serve PDFs
+app.use('/pdfs', express.static(path.join(__dirname, 'pdfs')));
+
 
 // Add a base route to confirm server is running
 app.get('/', (req, res) => {

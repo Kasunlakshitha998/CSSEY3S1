@@ -27,7 +27,7 @@ const Login = ({ onLogin }) => {
       );
 
       const { token, name, userId, age, type } = res.data;
-      console.log(userId)
+      console.log(res.data)
 
       // Set the token cookie (consider setting Secure and HttpOnly flags from the backend if possible)
       Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'strict' });

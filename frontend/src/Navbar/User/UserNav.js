@@ -4,7 +4,6 @@ import {
   FaHome,
   FaUser,
   FaFileAlt,
-  FaSignOutAlt,
   FaUserCircle,
   FaCalendarAlt,
 } from 'react-icons/fa';
@@ -16,6 +15,7 @@ const UserNav = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userType, setUserType] = useState(null); // To determine user role
+  const name = Cookies.get('name');
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -34,8 +34,11 @@ const UserNav = () => {
     { name: 'Patients', icon: <FaUser />, path: '/patients' },
     { name: 'Billing', icon: <FaFileAlt />, path: '/bill' },
     { name: 'Appointment', icon: <FaCalendarAlt />, path: '/appointment' }, // New Appointment link
-    { name: 'Profile', icon: <FaUserCircle />, path: '/profile' },
-    { name: 'Admin Appointments', icon: <FaCalendarAlt />, path: '/adminappointment' }, // Admin Appointments link
+    {
+      name: 'Admin Appointments',
+      icon: <FaCalendarAlt />,
+      path: '/adminappointment',
+    }, // Admin Appointments link
     { name: 'Prescriptions', icon: <FaFileAlt />, path: '/prescriptions' }, // New Prescriptions link
   ];
 
@@ -47,7 +50,9 @@ const UserNav = () => {
     }
     if (userType === 'doctor') {
       // Doctors might have specific links
-      return ['Home', 'Patients', 'Billing', 'Profile', 'Appointment'].includes(link.name);
+      return ['Home', 'Patients', 'Billing', 'Profile', 'Appointment'].includes(
+        link.name
+      );
     }
     if (userType === 'pharmacist') {
       // Pharmacists might have specific links
@@ -74,19 +79,23 @@ const UserNav = () => {
       {/* Header */}
       <header className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10 flex justify-between items-center">
         <h1 className="text-3xl font-bold mx-auto text-blue-600">
-          Hospital Management System
+          Hospital System
         </h1>
         <div className="flex items-center space-x-4 mr-5">
           {isAuthenticated && (
-            <div className="relative">
-              <button
-                onClick={toggleDropdown}
-                className="flex items-center focus:outline-none"
-              >
+            <div className="relative flex items-center space-x-4">
+              {/* Display Username */}
+
+              <p className="text-black mr-2 text-2xl">{name}</p>
+
+              {/* Dropdown Menu */}
+              <button onClick={toggleDropdown} className="focus:outline-none">
                 <FaUserCircle className="text-4xl text-gray-600" />
+                <div className="w-full h-full" />
               </button>
+
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-30">
+                <div className="absolute right-3 mt-48 w-48 bg-white rounded shadow-lg z-30">
                   <ul className="p-2">
                     <li>
                       <Link
@@ -105,12 +114,12 @@ const UserNav = () => {
                       </Link>
                     </li>
                     <li>
-                      <button
-                        onClick={handleLogout}
-                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-200"
+                      <Link
+                        to="/logout"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
                       >
                         Logout
-                      </button>
+                      </Link>
                     </li>
                   </ul>
                 </div>

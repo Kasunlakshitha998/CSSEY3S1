@@ -17,11 +17,10 @@ const PaymentDetails = ({
   useEffect(() => {
     if (balanceAmount === 0) {
       setPaidStatus('paid'); // Automatically set to "Confirm" when balance is 0
-    }
-    else {
+    } else {
       setPaidStatus('unPaid');
     }
-  }, [balanceAmount]); 
+  }, [balanceAmount, setPaidStatus]); 
 
   return (
     <div className="space-y-4">

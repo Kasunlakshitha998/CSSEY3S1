@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import validator from 'validator';
 import UserNav from '../../Navbar/User/UserNav';
 import { useLocation } from 'react-router-dom';
@@ -76,7 +75,7 @@ const PaymentPage = () => {
         alert('Payment Successful');
       }
 
-      if (selectedMethod == 'card') {
+      if (selectedMethod === 'card') {
         await updateBill(billId, 'paid');
       }
 
