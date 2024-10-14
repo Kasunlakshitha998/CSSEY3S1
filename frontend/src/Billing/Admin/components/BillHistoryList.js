@@ -25,7 +25,7 @@ export default function BillHistoryList({
           className="w-full sm:w-1/2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-purple-500"
         />
         <Link
-          to="/AddNewBill"
+          to="/BillingQr"
           className="flex justify-center items-center bg-purple-600 text-white text-center px-4 py-2 rounded-lg hover:bg-purple-900 focus:bg-purple-800 focus:outline-none transition-all duration-300 ml-12"
         >
           Add New Bill

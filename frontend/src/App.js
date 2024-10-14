@@ -19,6 +19,7 @@ import BillNavigation from './Navigation/BillNavigation';
 import AdminDashboard from './Patient/AdminDashboard';
 import PatientDashboard from './Patient/PatientDashboard';
 import QrCode from './Auth/QrCode';
+import { QrScanner } from 'react-qr-scanner';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -52,6 +53,7 @@ function App() {
       <Routes>
         <Route path="/usertype" element={<UserTypeSelection />} />
         <Route path="/QrCode" element={<QrCode />} />
+        <Route path="/QrScanner" element={<QrScanner />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register />} />
         <Route

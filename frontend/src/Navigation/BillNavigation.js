@@ -4,6 +4,7 @@ import BillList from './../Billing/User/BillList';
 import BillDetails from './../Billing/User/BillDetails';
 import PaymentPage from './../Billing/User/PaymentPage';
 import AllBill from './../Billing/Admin/AllBill';
+import BillingQr from '../Billing/Admin/BillingQr';
 
 export default function BillNavigation({ handleLogout }) {
   return (
@@ -24,6 +25,10 @@ export default function BillNavigation({ handleLogout }) {
       <Route
         path="/AllBill"
         element={<AllBill handleLogout={handleLogout} />}
+      />
+      <Route
+        path="/BillingQr"
+        element={<BillingQr handleLogout={handleLogout} />}
       />
     </>
   );

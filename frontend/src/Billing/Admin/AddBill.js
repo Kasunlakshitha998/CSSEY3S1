@@ -5,10 +5,13 @@ import TreatmentDetails from './components/TreatmentDetails';
 import PaymentDetails from './components/PaymentDetails';
 import AdminNav from '../../Navbar/Admin/AdminNav';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const AddBill = () => {
-  const [patientName, setPatientName] = useState('');
-  const [patientID, setPatientID] = useState('');
+  const location = useLocation();
+  const { data } = location.state || {};
+  const [patientName, setPatientName] = useState(data.name);
+  const [patientID, setPatientID] = useState(data.id);
   const [appointmentID, setAppointmentID] = useState('');
   const [treatmentDetails, setTreatmentDetails] = useState([
     { description: '', amount: '' },
@@ -86,8 +89,6 @@ const AddBill = () => {
   };
 
   const clear = () => {
-    setPatientName('');
-    setPatientID('');
     setAppointmentID('');
     setTreatmentDetails([{ description: '', amount: '' }]); // Reset to initial state
     setTotalAmount(0); // Reset totalAmount to 0
