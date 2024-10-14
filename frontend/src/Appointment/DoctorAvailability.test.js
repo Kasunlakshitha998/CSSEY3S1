@@ -1,18 +1,53 @@
-// DoctorAvailability.test.js
+// src/components/DoctorAvailability.test.js
 
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DoctorAvailability from './DoctorAvailability';
 import axios from 'axios';
+import '@testing-library/jest-dom/extend-expect';
 
 // Mock axios
 jest.mock('axios');
 
 describe('DoctorAvailability Component', () => {
   const mockAvailabilityData = [
-    { id: 1, date: '2024-10-15', time: '10:00 AM - 11:00 AM', doctor: 'Dr. Smith' },
-    { id: 2, date: '2024-10-16', time: '01:00 PM - 02:00 PM', doctor: 'Dr. Jones' },
+    {
+      _id: '1',
+      doctorId: 'D001',
+      doctorName: 'Dr. Smith',
+      specialization: 'Cardiology',
+      date: '2024-10-15',
+      startTime: '10:00',
+      endTime: '11:00',
+      isAvailable: true,
+    },
+    {
+      _id: '2',
+      doctorId: 'D002',
+      doctorName: 'Dr. Jones',
+      specialization: 'Neurology',
+      date: '2024-10-16',
+      startTime: '13:00',
+      endTime: '14:00',
+      isAvailable: true,
+    },
   ];
+
+  const newAvailability = {
+    _id: '3',
+    doctorId: 'D003',
+    doctorName: 'Dr. Adams',
+    specialization: 'Pediatrics',
+    date: '2024-10-17',
+    startTime: '15:00',
+    endTime: '16:00',
+    isAvailable: true,
+  };
+
+  beforeEach(() => {
+    // Clear all mocks before each test
+    jest.clearAllMocks();
+  });
 
   test('renders availability data correctly', async () => {
     // Mock the GET request
@@ -50,7 +85,7 @@ describe('DoctorAvailability Component', () => {
     axios.get.mockResolvedValueOnce({ data: mockAvailabilityData });
 
     // Mock the POST request
-    axios.post.mockResolvedValueOnce({ data: { id: 3, date: '2024-10-17', time: '03:00 PM - 04:00 PM', doctor: 'Dr. Adams' } });
+    axios.post.mockResolvedValueOnce({ data: newAvailability });
 
     render(<DoctorAvailability />);
 
@@ -59,10 +94,19 @@ describe('DoctorAvailability Component', () => {
       expect(screen.getByText('Dr. Smith')).toBeInTheDocument();
     });
 
-    // Simulate filling out and submitting the form
-    fireEvent.change(screen.getByPlaceholderText(/date/i), { target: { value: '2024-10-17' } });
-    fireEvent.change(screen.getByPlaceholderText(/time/i), { target: { value: '03:00 PM - 04:00 PM' } });
-    fireEvent.change(screen.getByPlaceholderText(/doctor name/i), { target: { value: 'Dr. Adams' } });
+    // Click the "Add Availability" button to show the form
+    fireEvent.click(screen.getByText(/add availability/i));
+
+    // Fill out the form fields
+    fireEvent.change(screen.getByLabelText(/doctor id/i), { target: { value: 'D003' } });
+    fireEvent.change(screen.getByLabelText(/doctor name/i), { target: { value: 'Dr. Adams' } });
+    fireEvent.change(screen.getByLabelText(/specialization/i), { target: { value: 'Pediatrics' } });
+    fireEvent.change(screen.getByLabelText(/date/i), { target: { value: '2024-10-17' } });
+    fireEvent.change(screen.getByLabelText(/start time/i), { target: { value: '15:00' } });
+    fireEvent.change(screen.getByLabelText(/end time/i), { target: { value: '16:00' } });
+    fireEvent.click(screen.getByLabelText(/available/i)); // Toggle availability if needed
+
+    // Submit the form
     fireEvent.click(screen.getByText(/add availability/i));
 
     // Wait for the new entry to appear
