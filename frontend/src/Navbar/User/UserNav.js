@@ -31,7 +31,7 @@ const UserNav = () => {
 
   const navLinks = [
     { name: 'Home', icon: <FaHome />, path: '/' },
-    { name: 'QrCode', icon: <FaCalendarAlt />, path: '/QrCode' },
+    { name: 'QRCode', icon: <FaCalendarAlt />, path: '/QrCode' },
     { name: 'Billing', icon: <FaFileAlt />, path: '/bill' },
     { name: 'Appointment', icon: <FaCalendarAlt />, path: '/appointment' },
     // New Appointment link
@@ -60,7 +60,7 @@ const UserNav = () => {
       return ['Home', 'Billing', 'Profile'].includes(link.name);
     }
     // Default for 'patient' or other roles
-    return ['Home', 'Billing', 'QrCode', 'Appointment'].includes(link.name);
+    return ['Home', 'Billing', 'QRCode', 'Appointment'].includes(link.name);
   });
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -79,7 +79,7 @@ const UserNav = () => {
     <>
       {/* Header */}
       <header className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10 flex justify-between items-center">
-        <h1 className="text-3xl font-bold mx-auto text-blue-600">
+        <h1 className="text-3xl font-bold mx-auto text-purple-600">
           Hospital System
         </h1>
         <div className="flex items-center space-x-4 mr-5">
@@ -141,7 +141,7 @@ const UserNav = () => {
       {/* Desktop Sidebar Navigation */}
       {isAuthenticated && (
         <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-20 transform transition-transform duration-300 md:block hidden">
-          <div className="bg-blue-600 p-4">
+          <div className="bg-purple-600 p-4">
             <h2 className="ml-5 text-3xl text-white font-semibold">LESSON</h2>
           </div>
           <ul className="mt-5">

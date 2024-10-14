@@ -276,7 +276,7 @@ const BillDetails = () => {
               fileName="invoice.pdf"
             >
               {({ loading }) => (
-                <button className="bg-blue-600 text-white px-6 py-3 w-56 rounded-md shadow-md hover:bg-blue-700 transition-all duration-200 mx-2 font-semibold">
+                <button className="bg-purple-600 text-white px-6 py-3 w-56 rounded-md shadow-md hover:bg-purple-700 transition-all duration-200 mx-2 font-semibold">
                   {loading ? 'Preparing Invoice...' : 'Download Invoice'}
                 </button>
               )}

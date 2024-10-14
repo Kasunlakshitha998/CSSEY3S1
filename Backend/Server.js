@@ -7,7 +7,7 @@ const mongoConnection = require('./util/MongoConnection');
 const billRoutes = require('./routes/MedicalBillRouter');
 const appointmentRoutes = require('./routes/AppointmentRouter');
 const actualAppointmentsRouter = require('./routes/actualAppointmentsRouter');
-const DoctorAvailability = require('./routes/doctorAvailabilityRouter')
+const doctorAvailability = require('./routes/doctorAvailabilityRouter');
 const chatRoutes = require('./routes/ChatRouter');
 const path = require('path');
 const chatPatientRoutes = require('./routes/chatPatients');
@@ -25,35 +25,31 @@ app.use(bodyParser.json({ limit: '10mb' })); // Increase limit as needed
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use(cors());
 
+// Connect to MongoDB
 (async () => {
   try {
     await mongoConnection.connect();
-    // Start server here
+    console.log('Connected to MongoDB');
   } catch (error) {
     console.error('Failed to connect to MongoDB', error);
   }
 })();
 
-app.use('/appointments', appointmentRoutes); // Use AppointmentRouter
+// Use routes
+app.use('/appointments', appointmentRoutes);
 app.use('/actual-appointments', actualAppointmentsRouter);
 app.use('/bills', billRoutes);
-app.use('/doctor-availability', DoctorAvailability); // New doctor availability route
+app.use('/doctor-availability', doctorAvailability);
 app.use('/chat', chatRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/chatPatients', chatPatientRoutes);
-
 app.use('/user', userRoutes);
 app.use('/payment', paymentHistoryRoutes);
-// Use routes
 app.use('/api/admin', adminRoutes);
 app.use('/api/patient', patientRoutes);
-app.use('/api/user', userRoutes);
-
-// Serve PDFs
 app.use('/pdfs', express.static(path.join(__dirname, 'pdfs')));
 
-
-// Add a base route to confirm server is running
+// Base route
 app.get('/', (req, res) => {
   res.send('Server is running!');
 });
@@ -64,8 +60,4 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something went wrong!');
 });
 
-// Start server
-const PORT = process.env.PORT || 8500;
-app.listen(PORT, () => {
-  console.log(`Server is up and running on port: ${PORT}`);
-});
+module.exports = app; // Export app for use in test and start scripts

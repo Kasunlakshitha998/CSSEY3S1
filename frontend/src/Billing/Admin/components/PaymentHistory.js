@@ -7,6 +7,8 @@ import {
   updateBill,
 } from '../../../services/BillingAPI';
 import PaymentReport from './PaymentReport'; // Adjust the import based on your file structure
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function PaymentHistory() {
   const [payments, setPayments] = useState([]);
@@ -36,8 +38,8 @@ export default function PaymentHistory() {
       await paymentApproved(id, status);
 
       if (status === 'approved') {
-        console.log(billId)
-        await updateBill(billId, 'paid')
+        console.log(billId);
+        await updateBill(billId, 'paid');
       }
 
       setPayments((prevPayments) =>
@@ -46,6 +48,11 @@ export default function PaymentHistory() {
         )
       );
       setIsModalOpen(false);
+
+      toast.success('Update successfully!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     } catch (error) {
       console.error(`Error updating payment status to ${status}:`, error);
     }
@@ -74,10 +81,10 @@ export default function PaymentHistory() {
 
   return (
     <div className="bg-gray-50 p-8 rounded-md">
+      <ToastContainer />
       <h3 className="text-2xl font-semibold mb-4 text-gray-700 text-center">
         Payment History
       </h3>
-
       {/* Date range filter */}
       <div className="mb-4 flex items-center justify-center align-center space-x-4">
         <div className="flex flex-col items-center">
@@ -118,7 +125,6 @@ export default function PaymentHistory() {
           Show Report
         </button>
       </div>
-
       <div className="overflow-x-auto">
         {/* Payment History Table */}
         <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
@@ -180,7 +186,6 @@ export default function PaymentHistory() {
           </tbody>
         </table>
       </div>
-
       {/* Modal for viewing slip and approving/rejecting */}
       {isModalOpen && selectedPayment && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
@@ -228,7 +233,6 @@ export default function PaymentHistory() {
           </div>
         </div>
       )}
-
       {/* Modal for Payment Report */}
       {isReportModalOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
@@ -242,7 +246,8 @@ export default function PaymentHistory() {
             <h4 className="text-xl font-semibold mb-4 text-gray-700">
               Payment Report
             </h4>
-            <PaymentReport payment={payments} /> {/* Include the PaymentReport component */}
+            <PaymentReport payment={payments} />{' '}
+            {/* Include the PaymentReport component */}
           </div>
         </div>
       )}

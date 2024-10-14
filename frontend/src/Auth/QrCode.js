@@ -1,7 +1,6 @@
 import React  from 'react';
 import Cookies from 'js-cookie';
 import UserNav from '../Navbar/User/UserNav';
-import QrCodeScanner from './QrCodeScanner';
 
 const QrCode = () => {
     const qrCode = Cookies.get('qrCode');
@@ -24,7 +23,6 @@ const QrCode = () => {
             />
           </div>
         </div>
-        <QrCodeScanner/>
       </div>
     </div>
   );
