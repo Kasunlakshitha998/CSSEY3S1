@@ -6,6 +6,7 @@ import {
   FaFileAlt,
   FaUserCircle,
   FaBars,
+  FaComments,
 } from 'react-icons/fa';
 import Cookies from 'js-cookie';
 
@@ -16,8 +17,9 @@ const DoctorNav = ({ sidebarOpen, toggleSidebar }) => {
 
   const navLinks = [
     { name: 'Home', icon: <FaHome />, path: '/dashboard' },
-    { name: 'Patients', icon: <FaUser />, path: '/adminappointment' },
+    { name: 'Patients', icon: <FaUser />, path: '/patientlist' },
     { name: 'Appointments', icon: <FaFileAlt />, path: '/doctorappointments' },
+    { name: 'Chat', icon: <FaComments />, path: '/chat' },
   ];
 
   const toggleDropdown = (e) => {

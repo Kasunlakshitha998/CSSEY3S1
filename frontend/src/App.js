@@ -20,6 +20,7 @@ import AdminDashboard from './Patient/AdminDashboard';
 import PatientDashboard from './Patient/PatientDashboard';
 import QrCode from './Auth/QrCode';
 import { QrScanner } from 'react-qr-scanner';
+import PatientList from './Pages/PatientList';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -136,6 +137,10 @@ function App() {
         <Route
           path="/message/:patientId"
           element={<Message handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/patientlist"
+          element={<PatientList handleLogout={handleLogout} />}
         />
       </Routes>
     </Router>

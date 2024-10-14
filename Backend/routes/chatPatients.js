@@ -33,4 +33,14 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const chatPatients = await ChatPatient.find({ clientId: userId }).select('clientId clientName');
+        res.json(chatPatients);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;

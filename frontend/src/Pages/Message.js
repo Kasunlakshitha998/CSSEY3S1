@@ -23,11 +23,11 @@ const Message = () => {
     }, []);
 
     useEffect(() => {
-        // Fetch chat messages for the selected patient
         const fetchMessages = async () => {
             if (patientId) {
                 try {
                     const response = await axios.get(`http://localhost:8500/chat/messages/${patientId}`);
+                    console.log("Fetched messages for patient ID:", patientId, response.data); // Log fetched messages
                     setMessages(response.data); // Set the fetched messages
                 } catch (error) {
                     console.error('Error fetching messages:', error.message);
@@ -68,11 +68,13 @@ const Message = () => {
             <h2>
                 Message Patient
                 {/* Display the selected patient's name here if needed */}
-                {patients.map((patient) => (
-                    <span key={patient._id}>
-                        {' '}{patient.name} {/* Fetch and display patient names */}
-                    </span>
-                ))}
+                {patients
+                    .filter((patient) => patient._id === patientId) // Filter patients by patientId
+                    .map((patient) => (
+                        <span key={patient._id}>
+                            {': '}{patient.name} {/* Display the matched patient's name */}
+                        </span>
+                    ))}
             </h2>
 
             {/* Message History */}
