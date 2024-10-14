@@ -31,9 +31,10 @@ const UserNav = () => {
 
   const navLinks = [
     { name: 'Home', icon: <FaHome />, path: '/' },
-    { name: 'Patients', icon: <FaUser />, path: '/patients' },
+    { name: 'QrCode', icon: <FaCalendarAlt />, path: '/QrCode' },
     { name: 'Billing', icon: <FaFileAlt />, path: '/bill' },
-    { name: 'Appointment', icon: <FaCalendarAlt />, path: '/appointment' }, // New Appointment link
+    { name: 'Appointment', icon: <FaCalendarAlt />, path: '/appointment' },
+    // New Appointment link
     {
       name: 'Admin Appointments',
       icon: <FaCalendarAlt />,
@@ -59,7 +60,7 @@ const UserNav = () => {
       return ['Home', 'Billing', 'Profile'].includes(link.name);
     }
     // Default for 'patient' or other roles
-    return ['Home', 'Billing', 'Profile', 'Appointment'].includes(link.name);
+    return ['Home', 'Billing', 'QrCode', 'Appointment'].includes(link.name);
   });
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);

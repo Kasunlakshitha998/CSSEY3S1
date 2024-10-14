@@ -21,7 +21,10 @@ const UserSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    default : 'user',
+    default: 'user',
+  },
+  qrCode: {
+    type: String, // Store QR code as a base64 image URL
   },
 });
 

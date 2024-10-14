@@ -1,14 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const QRCode = require('qrcode'); // Add QRCode package
 const User = require('../models/User');
 const router = express.Router();
 const cookieParser = require('cookie-parser');
 
 router.use(cookieParser());
 const dotenv = require('dotenv');
-dotenv.config();  
-
+dotenv.config();
 
 // Register Route
 router.post('/register', async (req, res) => {
@@ -27,39 +27,51 @@ router.post('/register', async (req, res) => {
     // Check if the user exists by email
     let userByEmail = await User.findOne({ email });
     if (userByEmail) {
-      return res.status(400).json({ msg: 'User already exists with this email' });
+      return res
+        .status(400)
+        .json({ msg: 'User already exists with this email' });
     }
 
     // Check if the user exists by name
     let userByName = await User.findOne({ name });
     if (userByName) {
-      return res.status(400).json({ msg: 'User already exists with this name' });
+      return res
+        .status(400)
+        .json({ msg: 'User already exists with this name' });
     }
 
     // Hash password and create user
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Create the user instance
     const user = new User({
       name,
       email,
       age,
       password: hashedPassword,
-      type
+      type,
     });
 
-    await user
-      .save()
-      .then(() => res.json('User Added'))
-      .catch((err) => res.status(400).json('Error: ' + err));
+    // Save the user to the database
+    await user.save();
 
+    // Generate QR code based on the user's ID
+    const qrCodeData = JSON.stringify({ id: user._id, email: user.email, name : user.name, });
+    const qrCodeUrl = await QRCode.toDataURL(qrCodeData);
+
+    // Update the user with the QR code URL
+    user.qrCode = qrCodeUrl; // Assuming you add this field to the schema
+    await user.save();
+
+    res.status(201).json({ message: 'User registered successfully', user });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 });
 
-
+// Login Route
 // Login Route
 router.route('/login').post((req, res) => {
   const { email, password } = req.body;
@@ -78,13 +90,14 @@ router.route('/login').post((req, res) => {
               res.cookie('token', token, { httpOnly: true, maxAge: 86400000 }); // Max age set to 1 day in milliseconds
               res.cookie('userEmail', user.email, { maxAge: 86400000 });
 
-              // Send user ID along with other data
+              // Send user details including QR code
               res.json({
                 status: 'success',
                 userId: user._id,
                 name: user.name,
                 age: user.age,
                 type: user.type,
+                qrCode: user.qrCode, // Add the QR code to the response
               });
             } else {
               res.status(401).json({ status: 'incorrect password' });
@@ -152,6 +165,4 @@ router.get('/initial', async (req, res) => {
   }
 });
 
-
 module.exports = router;
-
