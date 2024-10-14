@@ -1,4 +1,3 @@
-// routers/ChatRouter.js
 const express = require('express');
 const ChatMessage = require('../models/ChatMessage');
 const multer = require('multer');
@@ -45,11 +44,19 @@ router.post('/messages', upload.single('file'), async (req, res) => {
     }
 });
 
-// Get messages for a specific patient or doctor
-router.get('/messages/:receiverId', async (req, res) => {
-    const { receiverId } = req.params;
+// Get messages for a specific patient or doctor using their patient ID
+router.get('/messages/:patientId', async (req, res) => {
+    const { patientId } = req.params;
     try {
-        const messages = await ChatMessage.find({ receiver: receiverId }).sort({ timestamp: 1 });
+        // Fetch messages where the sender or receiver matches the provided patient ID
+        const messages = await ChatMessage.find({
+            $or: [
+                { sender: patientId },
+                { receiver: patientId }
+            ]
+        })
+            .sort({ timestamp: 1 }); // Sort messages by timestamp
+
         res.status(200).json(messages); // Respond with messages
     } catch (error) {
         console.error('Error fetching messages:', error);

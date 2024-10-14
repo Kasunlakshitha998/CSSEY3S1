@@ -29,7 +29,7 @@ const DoctorDashboard = () => {
               <div className="bg-white shadow-md p-6 rounded-lg">
                 <h4 className="font-bold text-lg">Today's Appointments</h4>
                 <p className="text-gray-700">You have 3 appointments scheduled today.</p>
-                <a href="/appointments" className="text-indigo-600 hover:underline">View All</a>
+                <a href="/doctorappointments" className="text-indigo-600 hover:underline">View All</a>
               </div>
 
               {/* Patient Reminders Card */}
