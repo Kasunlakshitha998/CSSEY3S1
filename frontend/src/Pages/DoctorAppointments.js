@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
-import AdminNav from '../Navbar/Admin/AdminNav';
+import DoctorNav from '../Navbar/Doctor/DoctorNav';
 
 const DoctorAppointments = () => {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate(); // Initialize useNavigate
+    const [sidebarOpen, setSidebarOpen] = useState(false); // State for sidebar
+
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen); // Toggle sidebar visibility
+    };
 
     useEffect(() => {
         const fetchAppointments = async () => {
@@ -57,7 +62,7 @@ const DoctorAppointments = () => {
 
     return (
         <>
-            <AdminNav />
+            <DoctorNav sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} /> {/* Pass state and toggle function */}
             <div className="admin-container">
                 <h2 className="admin-title">Doctor Appointments</h2>
 
@@ -105,11 +110,13 @@ const DoctorAppointments = () => {
           .admin-container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
+            margin-top: 20px;
+            padding: 100px;
             text-align: center;
             background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-left: 100px; /* Ensure there is space for the sidebar */
           }
 
           .admin-title {
@@ -120,7 +127,7 @@ const DoctorAppointments = () => {
           }
 
           .admin-table {
-            width: 100%;
+            width: 100%; 
             border-collapse: collapse;
             margin-bottom: 20px;
           }
