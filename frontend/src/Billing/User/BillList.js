@@ -29,7 +29,8 @@ const BillList = () => {
 
   const filteredOutstandingBills = bills.filter(
     (bill) =>
-      bill.paidStatus === 'unPaid' &&
+      bill.paidStatus === 'unPaid' ||
+      bill.paidStatus === 'pending' &&
       bill.patientName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 

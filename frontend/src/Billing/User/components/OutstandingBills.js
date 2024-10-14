@@ -1,4 +1,4 @@
-import { FaSearch, FaEye } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import BillCard from './BillCard';
 
 export default function OutstandingBills({ searchQuery, setSearchQuery, bill, navigate }) {

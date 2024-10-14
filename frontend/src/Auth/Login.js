@@ -26,8 +26,8 @@ const Login = ({ onLogin }) => {
         formData
       );
 
-      const { token, name, userId, age, type } = res.data;
-      console.log(userId)
+      const { token, name, userId, age, type, qrCode } = res.data;
+      console.log(res.data)
 
       // Set the token cookie (consider setting Secure and HttpOnly flags from the backend if possible)
       Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'strict' });
@@ -38,6 +38,7 @@ const Login = ({ onLogin }) => {
       Cookies.set('userId', userId, { expires: 7 });
       Cookies.set('age', age, { expires: 1 });
       Cookies.set('type', type, { expires: 1 });
+      Cookies.set('qrCode', qrCode, { expires: 1 });
 
       onLogin(res.data);
 

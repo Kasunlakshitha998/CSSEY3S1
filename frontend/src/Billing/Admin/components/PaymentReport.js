@@ -12,27 +12,14 @@ import moment from 'moment';
 import { Box, ButtonGroup, Button } from '@mui/material';
 import { getpaymentHistory } from '../../../services/BillingAPI'; 
 
-const PaymentReport = () => {
-  const [payments, setPayments] = useState([]);
+const PaymentReport = ({ payment }) => {
+  const [payments, setPayments] = useState(payment || []);
   const [filter, setFilter] = useState('daily'); // Default filter
   const [reportData, setReportData] = useState([]);
 
   useEffect(() => {
-    const fetchPayments = async () => {
-      try {
-        const response = await getpaymentHistory();
-        setPayments(response.data);
-      } catch (error) {
-        console.error('Error fetching payment history:', error);
-      }
-    };
-
-    fetchPayments();
-  }, []);
-
-  useEffect(() => {
     generateReportData();
-  }, [payments, filter]);
+  }, []);
 
   const generateReportData = () => {
     const dataMap = {};
@@ -67,7 +54,7 @@ const PaymentReport = () => {
         <Button onClick={() => setFilter('monthly')}>Monthly</Button>
       </ButtonGroup>
 
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width={768} height={400}>
         <LineChart data={reportData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />

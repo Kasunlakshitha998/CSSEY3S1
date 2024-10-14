@@ -171,10 +171,10 @@ const Appointment = () => {
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="time">
-                Time
+                number
               </label>
               <input
-                type="time"
+                type="text"
                 name="time"
                 value={appointmentData.time}
                 onChange={handleChange}
@@ -244,7 +244,7 @@ const Appointment = () => {
                        onClick={() => handleDelete(appointment._id)}
                         className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors duration-300"
                       >
-                      Delete
+                      cancel
                       </button>
                       </td>
                     </tr>

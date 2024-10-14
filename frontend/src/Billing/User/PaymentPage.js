@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import validator from 'validator';
 import UserNav from '../../Navbar/User/UserNav';
 import { useLocation } from 'react-router-dom';
 import { addpayment, updateBill } from '../../services/BillingAPI';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentPage = () => {
   const location = useLocation();
@@ -18,7 +18,7 @@ const PaymentPage = () => {
   const [name, setName] = useState('John Doe');
   const [slip, setSlip] = useState(null);
   const [errors, setErrors] = useState('');
-
+  const navigate = useNavigate();
   const userId = Cookies.get('userId');
 
   useEffect(() => {
@@ -76,10 +76,15 @@ const PaymentPage = () => {
         alert('Payment Successful');
       }
 
-      if (selectedMethod == 'card') {
+      if (selectedMethod === 'card') {
         await updateBill(billId, 'paid');
       }
 
+      if (selectedMethod === 'offline') {
+        await updateBill(billId, 'pending');
+      }
+
+      navigate('/bill');
 
     } catch (error) {
       console.error('Error updating payment status:', error);

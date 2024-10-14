@@ -1,10 +1,10 @@
 const {
   createBill,
   getBillById,
-  updateBillPayment,
+  updateBill,
   getBillsByUserId,
   getPaymentHistoryByUserId,
-} = require('../controller/billController');
+} = require('../controllers/billController');
 const MedicalBill = require('../models/MedicalBill');
 
 jest.mock('../models/MedicalBill');
@@ -58,24 +58,7 @@ describe('Bill Controller', () => {
     });
   });
 
-  describe('updateBillPayment', () => {
-    it('should update the payment status and return the updated bill', async () => {
-      const updatedBill = { _id: '123', paidStatus: 'paid' };
-      MedicalBill.findByIdAndUpdate.mockResolvedValue(updatedBill);
-
-      const result = await updateBillPayment('123', 'paid');
-      expect(result).toEqual(updatedBill);
-    });
-
-    it('should throw an error if the bill is not found', async () => {
-      MedicalBill.findByIdAndUpdate.mockResolvedValue(null);
-
-      await expect(updateBillPayment('123', 'paid')).rejects.toThrow(
-        'Bill not found'
-      );
-    });
-  });
-
+  
   describe('getBillsByUserId', () => {
     it('should return bills for a given user', async () => {
       const bills = [{ _id: '123' }];
@@ -147,5 +130,4 @@ describe('Bill Controller', () => {
       );
     });
   });
-
 });

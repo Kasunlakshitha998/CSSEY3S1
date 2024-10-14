@@ -6,6 +6,8 @@ import CountCard from './components/CountCard';
 import AdminNav from '../../Navbar/Admin/AdminNav';
 import PaymentHistory from './components/PaymentHistory';
 import BillHistoryList from './components/BillHistoryList';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AllBill() {
   const [bills, setBills] = useState([]);
@@ -40,6 +42,10 @@ function AllBill() {
   const handleDeleteBill = async (id) => {
     try {
       await deleteBill(id);
+      toast.success('Bill Delete successfully!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
       setBills(bills.filter((bill) => bill._id !== id));
       setFilteredBills(filteredBills.filter((bill) => bill._id !== id));
     } catch (err) {
@@ -60,6 +66,10 @@ function AllBill() {
         filteredBills.map((bill) => (bill._id === id ? updatedBill : bill))
       );
       setIsEditing(false);
+            toast.success('Bill Update successfully!', {
+              position: 'top-right',
+              autoClose: 3000,
+            });
       setEditingBill(null);
     } catch (err) {
       setError('Failed to update the bill.');
@@ -149,12 +159,10 @@ function AllBill() {
           />
         )}
       </div>
+
+      <ToastContainer />
     </>
   );
 }
 
 export default AllBill;
-
-
-
-

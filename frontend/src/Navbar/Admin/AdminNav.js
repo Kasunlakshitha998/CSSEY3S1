@@ -4,24 +4,30 @@ import {
   FaHome,
   FaUser,
   FaFileAlt,
-  FaSignOutAlt,
   FaCalendarCheck,
   FaUserCircle,
   FaBars,
 } from 'react-icons/fa';
+import Cookies from 'js-cookie';
 
 const AdminNav = () => {
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false); // Default to false for initial closed state
+  const name = Cookies.get('name');
+
 
   // Updated navLinks to include the Appointments section
   const navLinks = [
     { name: 'Home', icon: <FaHome />, path: '/admin' },
     { name: 'Patients', icon: <FaUser />, path: '/patients' },
     { name: 'Billing', icon: <FaFileAlt />, path: '/AllBill' },
-    { name: 'Appointments', icon: <FaFileAlt />, path: '/adminappointment' }, 
-    { name: 'Doctor Availability', icon: <FaCalendarCheck />, path: '/doctor-availability' }, // New Doctor Availability link
+    { name: 'Appointments', icon: <FaFileAlt />, path: '/adminappointment' },
+    {
+      name: 'Doctor Availability',
+      icon: <FaCalendarCheck />,
+      path: '/doctor-availability',
+    }, // New Doctor Availability link
   ];
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -29,56 +35,62 @@ const AdminNav = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10 flex justify-between items-center">
-        <h1 className="text-3xl font-bold mx-auto text-purple-600">
+      <header className="flex fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10  justify-between items-center">
+        <h1 className="relative left-1/3 text-3xl font-bold text-purple-600 ">
           Hospital Management System
         </h1>
-        <button onClick={toggleSidebar} className="p-2 mx-4 md:hidden">
+
+        {/* Button to toggle the sidebar on mobile */}
+        <button onClick={toggleSidebar} className="p-2 md:hidden">
           <FaBars
             className={`text-2xl transition-transform duration-300 ${
               sidebarOpen ? 'rotate-90' : ''
             }`}
           />
         </button>
-        <div className="flex items-center space-x-4 mr-5">
-          <div className="relative">
-            <button
-              onClick={toggleDropdown}
-              className="flex items-center focus:outline-none"
-            >
-              <FaUserCircle className="text-4xl text-gray-600" />
-            </button>
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-30">
-                <ul className="p-2">
-                  <li>
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
-                    >
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/settings"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
-                    >
-                      Settings
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/logout"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
-                    >
-                      Logout
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
+
+        {/* User section with dropdown */}
+        <div className="relative flex items-center space-x-4">
+          {/* Display Username */}
+
+          <p className="text-black mr-2 text-2xl">{name}</p>
+
+          {/* Dropdown Menu */}
+          <button onClick={toggleDropdown} className="focus:outline-none">
+            <FaUserCircle className="text-4xl text-gray-600" />
+            <div className="w-full h-full" />
+          </button>
+
+          {dropdownOpen && (
+            <div className="absolute right-3 mt-48 w-48 bg-white rounded shadow-lg z-30">
+              <ul className="p-2">
+                <li>
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  >
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/settings"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  >
+                    Settings
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/logout"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+                  >
+                    Logout
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </header>
 

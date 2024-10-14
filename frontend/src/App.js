@@ -1,32 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import AddBill from './Billing/Admin/AddBill';
-import BillList from './Billing/User/BillList';
-import BillDetails from './Billing/User/BillDetails';
-import PaymentPage from './Billing/User/PaymentPage';
-import AllBill from './Billing/Admin/AllBill';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
-import AdminDash from './Home/AdminDash';
-import UserDash from './Home/UserDash';
 import ProtectedRoute from './Auth/ProtectedRoute';
-
 import DoctorDash from './Home/DoctorDash';
 import DoctorAppointments from './Pages/DoctorAppointments';
-import Reminders from './Pages/Reminders'; 
+import Reminders from './Pages/Reminders';
 import Reports from './Pages/Reports';
-import VideoConsultation from './Pages/VideoConsultation'; 
-import Chat from './Pages/Chat'; 
+import VideoConsultation from './Pages/VideoConsultation';
+import Chat from './Pages/Chat';
 import ChatHistory from './Pages/ChatHistory';
 import Message from './Pages/Message';
-
 import UserTypeSelection from './Auth/UserTypeSelection'; // Import UserTypeSelection
 import Appointment from './Appointment/Appointment'; // Import the Appointment component
 import AdminAppointments from './Appointment/AdminAppointments';
 import DoctorAvailability from './Appointment/DoctorAvailability ';
+import BillNavigation from './Navigation/BillNavigation';
+import AdminDashboard from './Patient/AdminDashboard';
+import PatientDashboard from './Patient/PatientDashboard';
+import QrCode from './Auth/QrCode';
+import { QrScanner } from 'react-qr-scanner';
 
 function App() {
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -56,7 +51,9 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/usertype" element={<UserTypeSelection />} />
+        <Route path="/usertype" element={<UserTypeSelection />} />
+        <Route path="/QrCode" element={<QrCode />} />
+        <Route path="/QrScanner" element={<QrScanner />} />
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register />} />
         <Route
@@ -67,11 +64,10 @@ function App() {
               user={user}
               requiredRole="user"
             >
-              <UserDash handleLogout={handleLogout} />
+              <PatientDashboard handleLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
-
         {/* Protected Admin Dashboard */}
         <Route
           path="/admin"
@@ -81,11 +77,10 @@ function App() {
               user={user}
               requiredRole="admin"
             >
-              <AdminDash handleLogout={handleLogout} />
+              <AdminDashboard handleLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
-
         <Route
           path="/doctor"
           element={
@@ -98,29 +93,55 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route path="/AddNewBill" element={<AddBill />} />
-        <Route path="/bill" element={<BillList />} />
-        <Route path="/billDetails/:billId" element={<BillDetails />} />
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/AllBill" element={<AllBill />} />
-        <Route path="/appointment" element={<Appointment />} /> {/* New Appointment route */}
-        <Route path="/adminappointment" element={<AdminAppointments />} /> {/* New Appointment route */}
-        <Route path="/doctor-availability" element={<DoctorAvailability />} />
-        
-        <Route path="/dashboard" element={<DoctorDash />} />
-        <Route path="/doctorappointments" element={<DoctorAppointments />} />
-        <Route path="/reminders" element={<Reminders />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/video-consultation" element={<VideoConsultation />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/chathistory" element={<ChatHistory />} /> 
-        <Route path="/message/:patientId" element={<Message />} />
-
-      
+        {BillNavigation(handleLogout)}
+        <Route
+          path="/appointment"
+          element={<Appointment handleLogout={handleLogout} />}
+        />{' '}
+        {/* New Appointment route */}
+        <Route
+          path="/adminappointment"
+          element={<AdminAppointments handleLogout={handleLogout} />}
+        />{' '}
+        {/* New Appointment route */}
+        <Route
+          path="/doctor-availability"
+          element={<DoctorAvailability handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/dashboard"
+          element={<DoctorDash handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/doctorappointments"
+          element={<DoctorAppointments handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/reminders"
+          element={<Reminders handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/reports"
+          element={<Reports handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/video-consultation"
+          element={<VideoConsultation handleLogout={handleLogout} />}
+        />
+        <Route path="/chat" element={<Chat handleLogout={handleLogout} />} />
+        <Route
+          path="/chathistory"
+          element={<ChatHistory handleLogout={handleLogout} />}
+        />
+        <Route
+          path="/message/:patientId"
+          element={<Message handleLogout={handleLogout} />}
+        />
       </Routes>
     </Router>
   );
 }
 
 export default App;
+
+

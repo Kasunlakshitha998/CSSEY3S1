@@ -5,10 +5,15 @@ import TreatmentDetails from './components/TreatmentDetails';
 import PaymentDetails from './components/PaymentDetails';
 import AdminNav from '../../Navbar/Admin/AdminNav';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddBill = () => {
-  const [patientName, setPatientName] = useState('');
-  const [patientID, setPatientID] = useState('');
+  const location = useLocation();
+  const { data } = location.state || {};
+  const [patientName, setPatientName] = useState(data.name);
+  const [patientID, setPatientID] = useState(data.id);
   const [appointmentID, setAppointmentID] = useState('');
   const [treatmentDetails, setTreatmentDetails] = useState([
     { description: '', amount: '' },
@@ -75,7 +80,10 @@ const AddBill = () => {
     setLoading(true);
     try {
       await addBill(billData);
-      alert('Bill added successfully!');
+      toast.success('Bill Added successfully!', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
       clear();
     } catch (error) {
       console.error('Error adding bill:', error);
@@ -86,8 +94,6 @@ const AddBill = () => {
   };
 
   const clear = () => {
-    setPatientName('');
-    setPatientID('');
     setAppointmentID('');
     setTreatmentDetails([{ description: '', amount: '' }]); // Reset to initial state
     setTotalAmount(0); // Reset totalAmount to 0
@@ -159,14 +165,14 @@ const AddBill = () => {
           <div className="flex justify-between text-center">
             <Link
               to="/AllBill"
-              className="w-1/4 md:w-1/4 text-blue-600 bg-white px-4 py-2 rounded-lg hover:bg-blue-700 hover:text-white border border-black
+              className="w-1/4 md:w-1/4 text-purple-600 bg-white px-4 py-2 rounded-lg hover:bg-purple-700 hover:text-white border border-black
                transition duration-300 ml-14 hover:border-0"
             >
               {loading ? 'Submitting...' : 'Cancel'}
             </Link>
             <button
               type="submit"
-              className={`w-1/4 md:w-1/4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 mr-14 ${
+              className={`w-1/4 md:w-1/4 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-300 mr-14 ${
                 loading ? 'opacity-50 cursor-not-allowed' : ''
               }`}
               disabled={loading || !isFormValid()}
@@ -176,6 +182,7 @@ const AddBill = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </>
   );
 };

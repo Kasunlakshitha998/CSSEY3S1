@@ -1,10 +1,10 @@
-// src/components/DoctorAvailability.js
-
+// Import necessary components and packages
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminNav from '../Navbar/Admin/AdminNav';
+import DoctorAvailabilityForm from './DoctorAvailabilityForm';
 
 const DoctorAvailability = () => {
   const [showForm, setShowForm] = useState(false);
@@ -15,7 +15,7 @@ const DoctorAvailability = () => {
     date: '',
     startTime: '',
     endTime: '',
-    isAvailable: true, // Assuming this is a boolean
+    isAvailable: true,
   });
   const [loading, setLoading] = useState(false);
   const [availabilities, setAvailabilities] = useState([]);
@@ -39,7 +39,6 @@ const DoctorAvailability = () => {
 
   const toggleForm = () => {
     setShowForm(!showForm);
-    // Reset form fields if closing the form
     if (showForm) {
       resetForm();
     }
@@ -80,12 +79,10 @@ const DoctorAvailability = () => {
     setLoading(true);
     try {
       if (availabilityData._id) {
-        // Update existing availability
         const res = await axios.put(`http://localhost:8500/doctor-availability/${availabilityData._id}`, availabilityData);
         toast.success('Doctor availability updated successfully!');
         setAvailabilities(availabilities.map(avail => (avail._id === availabilityData._id ? res.data : avail)));
       } else {
-        // Add new availability
         const res = await axios.post('http://localhost:8500/doctor-availability', availabilityData, {
           headers: {
             'Content-Type': 'application/json',
@@ -114,7 +111,7 @@ const DoctorAvailability = () => {
       startTime: avail.startTime,
       endTime: avail.endTime,
       isAvailable: avail.isAvailable,
-      _id: avail._id, // Store the ID for updates
+      _id: avail._id,
     });
     setShowForm(true);
   };
@@ -137,82 +134,54 @@ const DoctorAvailability = () => {
       <AdminNav />
       <div className="flex flex-col items-center justify-start min-h-screen bg-gray-50 p-4 pt-20">
         <h1 className="text-4xl font-bold mb-6 text-purple-600">Doctor Availability</h1>
-        <button onClick={toggleForm} className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 focus:outline-none transition-colors duration-300 mb-4">
-          {showForm ? 'Cancel' : 'Add Availability'}
-        </button>
-
-        {showForm && (
-          <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-2xl mb-6">
-            <div className="grid grid-cols-1 gap-4">
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="doctorId">Doctor ID</label>
-                <input type="text" name="doctorId" value={availabilityData.doctorId} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
-              </div>
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="doctorName">Doctor Name</label>
-                <input type="text" name="doctorName" value={availabilityData.doctorName} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
-              </div>
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="specialization">Specialization</label>
-                <input type="text" name="specialization" value={availabilityData.specialization} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
-              </div>
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">Date</label>
-                <input type="date" name="date" value={availabilityData.date} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
-              </div>
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="startTime">Start Time</label>
-                <input type="time" name="startTime" value={availabilityData.startTime} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
-              </div>
-              <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="endTime">End Time</label>
-                <input type="time" name="endTime" value={availabilityData.endTime} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
-              </div>
-              <div className="flex items-center">
-                <input type="checkbox" name="isAvailable" checked={availabilityData.isAvailable} onChange={() => setAvailabilityData({ ...availabilityData, isAvailable: !availabilityData.isAvailable })} className="mr-2" />
-                <label className="text-gray-700 text-sm font-bold">Available</label>
-              </div>
-              <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300" disabled={loading}>
-                {loading ? 'Loading...' : (availabilityData._id ? 'Update Availability' : 'Add Availability')}
-              </button>
-            </div>
-          </form>
-        )}
-
-        <h2 className="text-2xl font-bold text-purple-600 mb-4">Current Availabilities</h2>
+        <DoctorAvailabilityForm 
+          availabilityData={availabilityData}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          loading={loading}
+          showForm={showForm}
+          toggleForm={toggleForm}
+          resetForm={resetForm}
+          handleEdit={handleEdit}
+        />
+        
         {fetchingAvailabilities ? (
-          <p>Loading availabilities...</p>
+          <p>Loading...</p>
         ) : (
-          <table className="w-auto bg-white shadow-md rounded-lg">
-            <thead className="bg-indigo-600 text-white">
+          <table className="w-auto bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden">
+            <thead className="bg-gray-100">
               <tr>
-                <th className="py-3 px-4 text-left">Doctor Name</th>
-                <th className="py-3 px-4 text-left">Specialization</th>
-                <th className="py-3 px-4 text-left">Date</th>
-                <th className="py-3 px-4 text-left">Start Time</th>
-                <th className="py-3 px-4 text-left">End Time</th>
-                <th className="py-3 px-4 text-left">Actions</th>
+                <th className="py-2 px-4 border-b">Doctor ID</th>
+                <th className="py-2 px-4 border-b">Doctor Name</th>
+                <th className="py-2 px-4 border-b">Specialization</th>
+                <th className="py-2 px-4 border-b">Date</th>
+                <th className="py-2 px-4 border-b">Start Time</th>
+                <th className="py-2 px-4 border-b">End Time</th>
+                <th className="py-2 px-4 border-b">Available</th>
+                <th className="py-2 px-4 border-b">Actions</th>
               </tr>
             </thead>
             <tbody>
               {availabilities.map(avail => (
                 <tr key={avail._id}>
-                  <td className="py-3 px-4">{avail.doctorName}</td>
-                  <td className="py-3 px-4">{avail.specialization}</td>
-                  <td className="py-3 px-4">{new Date(avail.date).toLocaleDateString()}</td>
-                  <td className="py-3 px-4">{avail.startTime}</td>
-                  <td className="py-3 px-4">{avail.endTime}</td>
-                  <td className="py-3 px-4">
-                    <button onClick={() => handleEdit(avail)} className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600 transition-colors duration-300">Edit</button>
-                    <button onClick={() => handleDelete(avail._id)} className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors duration-300">Delete</button>
+                  <td className="py-2 px-4 border-b">{avail.doctorId}</td>
+                  <td className="py-2 px-4 border-b">{avail.doctorName}</td>
+                  <td className="py-2 px-4 border-b">{avail.specialization}</td>
+                  <td className="py-2 px-4 border-b">{avail.date}</td>
+                  <td className="py-2 px-4 border-b">{avail.startTime}</td>
+                  <td className="py-2 px-4 border-b">{avail.endTime}</td>
+                  <td className="py-2 px-4 border-b">{avail.isAvailable ? 'Yes' : 'No'}</td>
+                  <td className="py-2 px-4 border-b">
+                    <button onClick={() => handleEdit(avail)} className="text-indigo-600 hover:underline">Edit</button>
+                    <button onClick={() => handleDelete(avail._id)} className="text-red-600 hover:underline ml-2">Delete</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
+        <ToastContainer />
       </div>
-      <ToastContainer />
     </>
   );
 };
