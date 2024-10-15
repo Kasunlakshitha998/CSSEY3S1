@@ -32,6 +32,13 @@ const DoctorDashboard = () => {
                 <a href="/doctorappointments" className="text-indigo-600 hover:underline">View All</a>
               </div>
 
+              {/* Patient Reminders Card */}
+              <div className="bg-white shadow-md p-6 rounded-lg">
+                <h4 className="font-bold text-lg">Patient Reminders</h4>
+                <p className="text-gray-700">You have 2 pending reminders to check.</p>
+                <a href="/reminders" className="text-indigo-600 hover:underline">View Reminders</a>
+              </div>
+
               {/* Video Consultation Card */}
               <div className="bg-white shadow-md p-6 rounded-lg">
                 <h4 className="font-bold text-lg">Video Consultation</h4>

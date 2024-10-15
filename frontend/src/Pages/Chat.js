@@ -7,29 +7,13 @@ const Message = () => {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [file, setFile] = useState(null);
-    const [patients, setPatients] = useState([]); // Fetch patient list
-    const [selectedPatientId, setSelectedPatientId] = useState(''); // Track selected patient
-    const [searchTerm, setSearchTerm] = useState(''); // Track search term
 
-    useEffect(() => {
-        // Fetch patients (users with type 'user') if needed
-        const fetchPatients = async () => {
-            try {
-                const response = await axios.get('http://localhost:8500/user/users');
-                setPatients(response.data); // Set the list of patients
-            } catch (error) {
-                console.error('Error fetching patients:', error.message);
-            }
-        };
-        fetchPatients();
-    }, []);
-
-    // Fetch messages when the component loads and when selectedPatientId changes
+    // Fetch messages when the component loads and when patientId changes
     useEffect(() => {
         const fetchMessages = async () => {
-            if (selectedPatientId) {
+            if (patientId) {
                 try {
-                    const response = await axios.get(`/chat/messages/${selectedPatientId}`);
+                    const response = await axios.get(`/chat/messages/${patientId}`);
                     setMessages(response.data);
                 } catch (error) {
                     console.error('Error fetching messages:', error.response ? error.response.data : error.message);
@@ -37,14 +21,14 @@ const Message = () => {
             }
         };
         fetchMessages();
-    }, [selectedPatientId]);
+    }, [patientId]);
 
     // Handle sending a message
     const handleSendMessage = async (e) => {
         e.preventDefault(); // Prevent form submission
         const formData = new FormData();
-        formData.append('sender', 'Doctor'); // Adjust as needed
-        formData.append('receiver', selectedPatientId); // Use the selected patient ID
+        formData.append('sender', 'Doctor');
+        formData.append('receiver', patientId);
 
         if (file) {
             formData.append('file', file); // Append the selected image file
@@ -72,42 +56,19 @@ const Message = () => {
         setFile(e.target.files[0]); // Set the selected file
     };
 
-    // Filter patients based on search term
-    const filteredPatients = patients.filter((patient) =>
-        patient.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
     return (
         <div className="flex flex-col h-full bg-gray-100">
             <div className="flex-1 overflow-auto p-4">
-                <h2 className="text-xl font-semibold mb-4">Message Patient</h2>
-                {/* Dropdown for selecting a patient with search functionality */}
-                <div className="relative mb-4">
-                    <input
-                        type="text"
-                        placeholder="Search for a patient..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)} // Update search term
-                        className="mb-2 p-2 border rounded w-full"
-                    />
-                    <select
-                        value={selectedPatientId || ''} // Set value to selectedPatientId or empty string for default
-                        onChange={(e) => setSelectedPatientId(e.target.value)}
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    >
-                        <option value="" disabled>Select a patient</option> {/* Default option */}
-                        {filteredPatients.map((patient) => (
-                            <option key={patient._id} value={patient._id}>
-                                {patient.name}
-                            </option>
-                        ))}
-                    </select>
-                    {/* Display filtered patient names in the dropdown */}
-                    {filteredPatients.length === 0 && (
-                        <div className="absolute left-0 right-0 bg-white border border-gray-300 rounded mt-1 p-2">
-                            No patients found
+                <h2 className="text-xl font-semibold mb-4">Message Patient {patientId}</h2>
+
+                {/* Display chat messages */}
+                <div className="space-y-4">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`p-2 rounded-lg ${msg.sender === 'Doctor' ? 'ml-auto bg-indigo-200' : 'mr-auto bg-gray-300'}`} style={{ minWidth: '215px', maxWidth: '70%', width: 'fit-content' }}>
+                            <span>{msg.message}</span>
+                            {msg.file && <img src={`http://localhost:8500/${msg.file}`} alt="attachment" style={{ width: '200px', height: 'auto', borderRadius: '5px' }} />}
                         </div>
-                    )}
+                    ))}
                 </div>
             </div>
 

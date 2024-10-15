@@ -5,6 +5,7 @@ import Register from './Auth/Register';
 import ProtectedRoute from './Auth/ProtectedRoute';
 import DoctorDash from './Home/DoctorDash';
 import DoctorAppointments from './Pages/DoctorAppointments';
+import Reminders from './Pages/Reminders';
 import Reports from './Pages/Reports';
 import VideoConsultation from './Pages/VideoConsultation';
 import Chat from './Pages/Chat';
@@ -19,7 +20,6 @@ import AdminDashboard from './Patient/AdminDashboard';
 import PatientDashboard from './Patient/PatientDashboard';
 import QrCode from './Auth/QrCode';
 import { QrScanner } from 'react-qr-scanner';
-import PatientList from './Pages/PatientList';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -117,6 +117,10 @@ function App() {
           element={<DoctorAppointments handleLogout={handleLogout} />}
         />
         <Route
+          path="/reminders"
+          element={<Reminders handleLogout={handleLogout} />}
+        />
+        <Route
           path="/reports"
           element={<Reports handleLogout={handleLogout} />}
         />
@@ -132,10 +136,6 @@ function App() {
         <Route
           path="/message/:patientId"
           element={<Message handleLogout={handleLogout} />}
-        />
-        <Route
-          path="/patientlist"
-          element={<PatientList handleLogout={handleLogout} />}
         />
       </Routes>
     </Router>
