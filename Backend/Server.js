@@ -41,7 +41,6 @@ app.use('/doctor-availability', DoctorAvailability); // New doctor availability 
 app.use('/chat', chatRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/chatPatients', chatPatientRoutes);
-
 app.use('/user', userRoutes);
 app.use('/payment', paymentHistoryRoutes);
 // Use routes
@@ -52,10 +51,12 @@ app.use('/api/user', userRoutes);
 // Serve PDFs
 app.use('/pdfs', express.static(path.join(__dirname, 'pdfs')));
 
+
 // Add a base route to confirm server is running
 app.get('/', (req, res) => {
   res.send('Server is running!');
 });
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -10,7 +10,6 @@ import {
 } from 'recharts';
 import moment from 'moment';
 import { Box, ButtonGroup, Button } from '@mui/material';
-import { getpaymentHistory } from '../../../services/BillingAPI'; 
 
 const PaymentReport = ({ payment }) => {
   const [payments, setPayments] = useState(payment || []);
