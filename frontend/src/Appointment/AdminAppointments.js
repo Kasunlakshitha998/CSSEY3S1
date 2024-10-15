@@ -266,6 +266,7 @@ const AdminAppointments = () => {
               <th>Date</th>
               <th>Time</th>
               <th>Email</th> {/* New column for email */}
+              <th>description</th> {/* New column for email */}
           
               <th>Action</th>
             </tr>
@@ -278,6 +279,7 @@ const AdminAppointments = () => {
                 <td>{new Date(appointment.date).toLocaleDateString()}</td>
                 <td>{appointment.time}</td>
                 <td>{appointment.email}</td> {/* Display email */}
+                <td>{appointment.reason}</td> {/* Display email */}
             
                 <td>
                   <button
