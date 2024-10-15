@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   FaHome,
-  FaUser,
   FaFileAlt,
   FaUserCircle,
   FaCalendarAlt,
@@ -115,12 +114,12 @@ const UserNav = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link
-                        to="/logout"
+                      <button
+                        onClick={handleLogout}
                         className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
                       >
                         Logout
-                      </Link>
+                      </button>
                     </li>
                   </ul>
                 </div>

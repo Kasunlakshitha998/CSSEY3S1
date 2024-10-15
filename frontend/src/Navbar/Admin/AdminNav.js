@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   FaHome,
   FaUser,
@@ -15,7 +15,7 @@ const AdminNav = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false); // Default to false for initial closed state
   const name = Cookies.get('name');
-
+  const navigate = useNavigate();
 
   // Updated navLinks to include the Appointments section
   const navLinks = [
@@ -29,6 +29,14 @@ const AdminNav = () => {
       path: '/doctor-availability',
     }, // New Doctor Availability link
   ];
+
+  const handleLogout = () => {
+    Cookies.remove('token');
+    Cookies.remove('userEmail');
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('user');
+    navigate('/login'); // Redirect to login page after logout
+  };
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -81,12 +89,12 @@ const AdminNav = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to="/logout"
+                  <button
+                    onClick={handleLogout}
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
                   >
                     Logout
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </div>
