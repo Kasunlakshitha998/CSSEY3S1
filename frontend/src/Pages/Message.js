@@ -108,9 +108,19 @@ const Message = () => {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Type your message..."
+                    className="flex-1 p-2 border rounded"
                 />
-                <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-                <button type="submit">Send</button>
+                <input 
+                    type="file" 
+                    className="ml-2 p-2 border rounded"
+                    onChange={(e) => setFile(e.target.files[0])} 
+                />
+                <button 
+                    type="submit"
+                    className="ml-2 p-2 bg-indigo-600 text-white rounded"
+                >
+                    Send
+                </button>
             </form>
         </div>
     );
@@ -126,7 +136,7 @@ const styles = {
     messageHistory: {
         padding: '10px',
         overflowY: 'auto', // Allow scrolling if messages exceed the height
-        maxHeight: '400px', // Set a max height for the message history
+        maxHeight: '570px', // Set a max height for the message history
         backgroundColor: '#f5f5f5', // Light background color
     },
     doctorMessage: {

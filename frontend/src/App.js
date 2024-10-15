@@ -5,7 +5,6 @@ import Register from './Auth/Register';
 import ProtectedRoute from './Auth/ProtectedRoute';
 import DoctorDash from './Home/DoctorDash';
 import DoctorAppointments from './Pages/DoctorAppointments';
-import Reminders from './Pages/Reminders';
 import Reports from './Pages/Reports';
 import VideoConsultation from './Pages/VideoConsultation';
 import Chat from './Pages/Chat';
@@ -116,10 +115,6 @@ function App() {
         <Route
           path="/doctorappointments"
           element={<DoctorAppointments handleLogout={handleLogout} />}
-        />
-        <Route
-          path="/reminders"
-          element={<Reminders handleLogout={handleLogout} />}
         />
         <Route
           path="/reports"
