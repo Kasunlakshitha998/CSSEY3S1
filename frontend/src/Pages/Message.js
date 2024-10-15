@@ -10,7 +10,6 @@ const Message = () => {
     const [patients, setPatients] = useState([]); // Fetch patient list
 
     useEffect(() => {
-        // Fetch patients (users with type 'user') if needed
         const fetchPatients = async () => {
             try {
                 const response = await axios.get('http://localhost:8500/user/users');
@@ -65,32 +64,32 @@ const Message = () => {
 
     return (
         <div className="flex flex-col h-full bg-gray-100">
-            <h2>
-                Message Patient
+            <h2 style={styles.title}>
+                Prescriptions for:
                 {/* Display the selected patient's name here if needed */}
                 {patients
                     .filter((patient) => patient._id === patientId) // Filter patients by patientId
                     .map((patient) => (
                         <span key={patient._id}>
-                            {': '}{patient.name} {/* Display the matched patient's name */}
+                            {'  '}{patient.name} {/* Display the matched patient's name */}
                         </span>
                     ))}
             </h2>
 
             {/* Message History */}
-            <div className="message-history">
+            <div className="message-history" style={styles.messageHistory}>
                 {messages.map((msg, index) => (
-                    <div key={index}>
+                    <div key={index} style={msg.sender === 'Doctor' ? styles.doctorMessage : styles.patientMessage}>
                         {/* Display text message if available */}
-                        {msg.message && <p>{msg.message}</p>}
+                        {msg.message && <p style={styles.messageText}>{msg.message}</p>}
 
                         {/* Display image if available */}
                         {msg.file && (
-                            <div>
+                            <div style={styles.imageContainer}>
                                 <img
                                     src={`http://localhost:8500/${msg.file}`}
                                     alt="attachment"
-                                    style={{ width: '200px', height: 'auto', borderRadius: '5px' }}
+                                    style={styles.image}
                                 />
                             </div>
                         )}
@@ -99,7 +98,11 @@ const Message = () => {
             </div>
 
             {/* Message Input */}
-            <form onSubmit={handleSendMessage} className="message-form">
+            <form 
+                onSubmit={handleSendMessage} 
+                className="message-form flex p-5 bg-white border-t border-gray-300"
+                style={styles.formstyle}
+            >
                 <input
                     type="text"
                     value={inputValue}
@@ -111,6 +114,62 @@ const Message = () => {
             </form>
         </div>
     );
+};
+
+const styles = {
+    title: {
+        textAlign: 'center',  // Center the text
+        fontSize: '24px',     // Increase the font size
+        margin: '20px 0',     // Optional: Add some vertical margin
+        fontWeight: 'bold',    // Optional: Make the font bold
+    },
+    messageHistory: {
+        padding: '10px',
+        overflowY: 'auto', // Allow scrolling if messages exceed the height
+        maxHeight: '400px', // Set a max height for the message history
+        backgroundColor: '#f5f5f5', // Light background color
+    },
+    doctorMessage: {
+        margin: '10px 0',
+        padding: '10px',
+        borderRadius: '15px',
+        backgroundColor: '#dcf8c6', // Light green for sent messages
+        alignSelf: 'flex-end', // Align to the right
+        maxWidth: '70%', // Max width of the message bubble
+        wordWrap: 'break-word', // Allow text to wrap
+        alignSelf: 'flex-end',
+    },
+    patientMessage: {
+        margin: '10px 0',
+        padding: '10px',
+        borderRadius: '15px',
+        backgroundColor: '#ffffff', // White for received messages
+        alignSelf: 'flex-start', // Align to the left
+        maxWidth: '70%', // Max width of the message bubble
+        wordWrap: 'break-word', // Allow text to wrap
+        alignSelf: 'flex-start',
+    },
+    messageText: {
+        margin: '0', // Remove default margin for paragraphs
+        fontSize: '16px', // Font size for message text
+    },
+    imageContainer: {
+        marginTop: '5px', // Space between text and image
+        display: 'flex',
+        justifyContent: 'flex-start', // Align image to the right for doctor messages
+    },
+    image: {
+        width: '200px',
+        height: 'auto',
+        borderRadius: '5px',
+    },
+    formstyle:{
+        position: 'fixed', 
+        bottom: 0, 
+        left: 0, 
+        right: 0, 
+        backgroundColor: 'white',
+    },
 };
 
 export default Message;
