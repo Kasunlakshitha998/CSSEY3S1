@@ -1,14 +1,23 @@
 // src/tests/createActualAppointment.test.js
 
 const mongoose = require('mongoose');
+<<<<<<< Updated upstream
 const { createActualAppointment } = require('../controllers/actualAppointmentController');
+=======
+const {
+  createActualAppointment,
+} = require('../controllers/actualAppointmentController');
+>>>>>>> Stashed changes
 const ActualAppointment = require('../models/ActualAppointment');
 
 // Mock the ActualAppointment model
 jest.mock('../models/ActualAppointment');
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 describe('Create Actual Appointment', () => {
   it('should create a new appointment successfully', async () => {
     const appointmentData = {
@@ -54,6 +63,12 @@ describe('Create Actual Appointment', () => {
       };
     });
 
+<<<<<<< Updated upstream
     await expect(createActualAppointment(appointmentData)).rejects.toThrow('Error creating appointment: Database error');
+=======
+    await expect(createActualAppointment(appointmentData)).rejects.toThrow(
+      'Error creating appointment: Database error'
+    );
+>>>>>>> Stashed changes
   });
 });

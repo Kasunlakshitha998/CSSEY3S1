@@ -1,6 +1,12 @@
 // src/tests/createAppointment.test.js
 
+<<<<<<< Updated upstream
 const { createAppointment } = require('../controllers/appointmentController.js');
+=======
+const {
+  createAppointment,
+} = require('../controllers/appointmentController.js');
+>>>>>>> Stashed changes
 const Appointment = require('../models/Appointment');
 
 // Mock the Appointment model

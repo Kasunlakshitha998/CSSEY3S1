@@ -1,7 +1,6 @@
 const {
   createBill,
   getBillById,
-  updateBill,
   getBillsByUserId,
   getPaymentHistoryByUserId,
 } = require('../controllers/billController');
